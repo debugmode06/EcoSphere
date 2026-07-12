@@ -1,11 +1,12 @@
 const express = require('express');
 const router = express.Router();
 
-// TODO (Person 2): Mount social routes
-// GET  /csr-activities
-// POST /csr-activities               (ADMIN, MANAGER)
-// GET  /participations
-// POST /participations               (all authenticated)
-// PATCH /participations/:id/approve  (ADMIN, MANAGER)
+const categoryRoutes = require('./routes/categoryRoutes');
+const csrRoutes = require('./routes/csrRoutes');
+const participationRoutes = require('./routes/participationRoutes');
+
+router.use('/categories', categoryRoutes);
+router.use('/csr-activities', csrRoutes);
+router.use('/participations', participationRoutes);
 
 module.exports = router;

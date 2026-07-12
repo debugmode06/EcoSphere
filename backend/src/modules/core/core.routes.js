@@ -15,5 +15,24 @@ router.post('/categories', protect, requireRole('ADMIN'), ctrl.createCategory);
 
 router.get('/reports', protect, requireRole('ADMIN', 'MANAGER'), ctrl.getReport);
 router.get('/leaderboard', protect, ctrl.getLeaderboard);
+const Department = require('./models/Department.model');
+const asyncHandler = require('../../utils/asyncHandler');
+const { verifyToken } = require('../../middleware/auth');
+
+// GET /api/core/departments — returns all departments (used by social module CSR form)
+router.get('/departments', verifyToken, asyncHandler(async (req, res) => {
+  const departments = await Department.find({ status: 'Active' }).sort({ name: 1 });
+  res.json({ departments });
+}));
+
+// TODO (Person 4): Mount remaining core routes
+// GET  /dashboard
+// GET  /scores
+// POST /scores/recalculate   (ADMIN)
+// POST /departments           (ADMIN)
+// GET  /categories
+// POST /categories            (ADMIN)
+// GET  /reports               (ADMIN, MANAGER)
+// GET  /leaderboard
 
 module.exports = router;

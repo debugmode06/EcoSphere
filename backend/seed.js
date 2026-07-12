@@ -215,7 +215,7 @@ async function seed() {
       description:
         'HVAC maintenance logs were not maintained for February 2025. Required under ISO 14001 environmental management standard.',
       owner: 'Manager One',
-      dueDate: pastDate, // deliberately past → isOverdue will be set by pre-save
+      dueDate: pastDate,
       status: 'OPEN',
     },
     {
@@ -297,7 +297,6 @@ async function seed() {
     { name: 'Movie Ticket', description: 'Eco-friendly cinema ticket voucher', pointsRequired: 150, stock: 5, status: 'Active' },
     { name: 'Lunch Voucher', description: 'Organic farm-to-table lunch voucher', pointsRequired: 200, stock: 3, status: 'Active' }
   ]);
-
 
   console.log('\n✅ Seeding complete!');
   console.log('─────────────────────────────────────────────────────────');

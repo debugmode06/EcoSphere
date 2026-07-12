@@ -1,4 +1,5 @@
 // eslint-disable-next-line no-unused-vars
+// eslint-disable-next-line no-unused-vars
 const errorHandler = (err, req, res, next) => {
   console.error(err.stack);
 
@@ -17,6 +18,12 @@ const errorHandler = (err, req, res, next) => {
   // Mongoose cast error (invalid ObjectId)
   if (err.name === 'CastError') {
     return res.status(400).json({ message: `Invalid value for field: ${err.path}` });
+  }
+
+  // Authentication errors
+  if (err.message && (err.message.includes('Invalid email or password') || err.message.includes('Email is already registered')) ) {
+    const status = err.message.includes('Email is already registered') ? 400 : 401;
+    return res.status(status).json({ message: err.message });
   }
 
   res.status(err.statusCode || 500).json({

@@ -14,9 +14,11 @@ import Settings from '../modules/core/pages/Settings';
 import EmissionsPage from '../modules/environmental/pages/EmissionsPage';
 import GoalsPage from '../modules/environmental/pages/GoalsPage';
 
-// Social
-import ActivitiesPage from '../modules/social/pages/ActivitiesPage';
-import ParticipationPage from '../modules/social/pages/ParticipationPage';
+// Social — our new pages
+import Categories from '../modules/social/pages/Categories';
+import CSRActivities from '../modules/social/pages/CSRActivities';
+import Participation from '../modules/social/pages/Participation';
+import Approvals from '../modules/social/pages/Approvals';
 
 // Governance
 import PoliciesPage from '../modules/governance/pages/PoliciesPage';
@@ -44,7 +46,7 @@ export default function AppRouter() {
   const { isAuthenticated } = useAuth();
 
   return (
-    <BrowserRouter>
+    <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
       <Routes>
         <Route path="/login" element={isAuthenticated ? <Navigate to="/dashboard" replace /> : <LoginPage />} />
 
@@ -55,8 +57,11 @@ export default function AppRouter() {
         <Route path="/environmental/emissions" element={<ProtectedRoute><EmissionsPage /></ProtectedRoute>} />
         <Route path="/environmental/goals" element={<ProtectedRoute><GoalsPage /></ProtectedRoute>} />
 
-        <Route path="/social/activities" element={<ProtectedRoute><ActivitiesPage /></ProtectedRoute>} />
-        <Route path="/social/participations" element={<ProtectedRoute><ParticipationPage /></ProtectedRoute>} />
+        {/* Social Module */}
+        <Route path="/social/categories" element={<ProtectedRoute><Categories /></ProtectedRoute>} />
+        <Route path="/social/activities" element={<ProtectedRoute><CSRActivities /></ProtectedRoute>} />
+        <Route path="/social/participations" element={<ProtectedRoute><Participation /></ProtectedRoute>} />
+        <Route path="/social/approvals" element={<ProtectedRoute><Approvals /></ProtectedRoute>} />
 
         <Route path="/governance/policies" element={<ProtectedRoute><PoliciesPage /></ProtectedRoute>} />
         <Route path="/governance/audits" element={<ProtectedRoute><AuditsPage /></ProtectedRoute>} />
