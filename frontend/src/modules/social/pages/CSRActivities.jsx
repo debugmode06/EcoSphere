@@ -80,9 +80,9 @@ export default function CSRActivities() {
       )}
 
       {loading ? (
-        <div className="text-center py-10 text-slate-400">Loading activities...</div>
+        <div className="text-center py-10 text-slate-500">Loading activities...</div>
       ) : activities.length === 0 ? (
-        <div className="card p-10 text-center text-slate-400">
+        <div className="card p-10 text-center text-slate-500">
           No activities found. {isAdmin && 'Create one to get started.'}
         </div>
       ) : (
@@ -92,22 +92,22 @@ export default function CSRActivities() {
             return (
               <div key={act._id} className="card p-5 flex flex-col gap-3 hover:border-slate-600 transition-all">
                 <div className="flex items-start justify-between gap-2">
-                  <h3 className="font-semibold text-slate-100 leading-snug">{act.title}</h3>
+                  <h3 className="font-semibold text-slate-900 leading-snug">{act.title}</h3>
                   <span className={`${STATUS_STYLE[act.status]} shrink-0`}>{act.status}</span>
                 </div>
                 {act.description && (
-                  <p className="text-slate-400 text-sm line-clamp-2">{act.description}</p>
+                  <p className="text-slate-500 text-sm line-clamp-2">{act.description}</p>
                 )}
-                <div className="space-y-1.5 text-xs text-slate-400">
+                <div className="space-y-1.5 text-xs text-slate-500">
                   <div className="flex items-center gap-2">
-                    <MapPin className="w-3.5 h-3.5 text-brand-400" /> {act.location}
+                    <MapPin className="w-3.5 h-3.5 text-brand-600" /> {act.location}
                   </div>
                   <div className="flex items-center gap-2">
-                    <Calendar className="w-3.5 h-3.5 text-brand-400" />
+                    <Calendar className="w-3.5 h-3.5 text-brand-600" />
                     {new Date(act.startDate).toLocaleDateString()} — {new Date(act.endDate).toLocaleDateString()}
                   </div>
                   <div className="flex items-center gap-2">
-                    <Users2 className="w-3.5 h-3.5 text-brand-400" /> Max {act.maxParticipants} participants
+                    <Users2 className="w-3.5 h-3.5 text-brand-600" /> Max {act.maxParticipants} participants
                   </div>
                 </div>
                 {act.evidenceRequired && (
@@ -115,7 +115,7 @@ export default function CSRActivities() {
                     ⚠️ Proof required for approval
                   </div>
                 )}
-                <div className="mt-auto pt-3 border-t border-slate-700/50 flex flex-wrap gap-2">
+                <div className="mt-auto pt-3 border-t border-slate-200 flex flex-wrap gap-2">
                   {isAdmin && (
                     <>
                       <button onClick={() => handleEdit(act)} className="btn-secondary text-xs px-3 py-1.5 flex items-center gap-1">

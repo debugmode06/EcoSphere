@@ -13,6 +13,8 @@ require('./modules/environmental/models/CarbonTransaction.model');
 require('./modules/environmental/models/EnvironmentalGoal.model');
 require('./modules/social/models/CsrActivity.model');
 require('./modules/social/models/EmployeeParticipation.model');
+require('./modules/social/models/Training');
+require('./modules/social/models/TrainingCompletion');
 require('./modules/governance/models/EsgPolicy.model');
 require('./modules/governance/models/PolicyAcknowledgement.model');
 require('./modules/governance/models/Audit.model');

@@ -22,6 +22,8 @@ const Challenge = require('./src/modules/gamification/models/Challenge.model');
 const ChallengeParticipation = require('./src/modules/gamification/models/ChallengeParticipation.model');
 const Badge = require('./src/modules/gamification/models/Badge.model');
 const Reward = require('./src/modules/gamification/models/Reward.model');
+const Training = require('./src/modules/social/models/Training');
+const TrainingCompletion = require('./src/modules/social/models/TrainingCompletion');
 
 const hash = (pw) => bcrypt.hashSync(pw, 10);
 
@@ -44,6 +46,8 @@ async function seed() {
     ChallengeParticipation.deleteMany({}),
     Badge.deleteMany({}),
     Reward.deleteMany({}),
+    Training.deleteMany({}),
+    TrainingCompletion.deleteMany({}),
   ]);
 
   // ── Departments ──────────────────────────────────────────────────────────
@@ -70,6 +74,9 @@ async function seed() {
       passwordHash: hash('Admin@123'),
       role: 'ADMIN',
       department: engineering._id,
+      gender: 'Female',
+      age: 35,
+      location: 'Chennai',
       xp: 500,
       points: 200,
     },
@@ -79,6 +86,9 @@ async function seed() {
       passwordHash: hash('Manager@123'),
       role: 'MANAGER',
       department: operations._id,
+      gender: 'Male',
+      age: 42,
+      location: 'Mumbai',
       xp: 300,
       points: 120,
     },
@@ -88,6 +98,9 @@ async function seed() {
       passwordHash: hash('Emp@123'),
       role: 'EMPLOYEE',
       department: engineering._id,
+      gender: 'Male',
+      age: 28,
+      location: 'Chennai',
       xp: 100,
       points: 50,
     },
@@ -97,6 +110,9 @@ async function seed() {
       passwordHash: hash('Emp@123'),
       role: 'EMPLOYEE',
       department: operations._id,
+      gender: 'Female',
+      age: 31,
+      location: 'Bangalore',
       xp: 80,
       points: 30,
     },
@@ -106,6 +122,9 @@ async function seed() {
       passwordHash: hash('Emp@123'),
       role: 'EMPLOYEE',
       department: hr._id,
+      gender: 'Non-binary',
+      age: 26,
+      location: 'Mumbai',
       xp: 60,
       points: 20,
     },
@@ -296,6 +315,43 @@ async function seed() {
     { name: 'Coffee Coupon', description: 'Free starbucks reusable cup hot drink coupon', pointsRequired: 50, stock: 10, status: 'Active' },
     { name: 'Movie Ticket', description: 'Eco-friendly cinema ticket voucher', pointsRequired: 150, stock: 5, status: 'Active' },
     { name: 'Lunch Voucher', description: 'Organic farm-to-table lunch voucher', pointsRequired: 200, stock: 3, status: 'Active' }
+  ]);
+
+  // ── Training Programs ──────────────────────────────────────────────────────
+  console.log('📚 Seeding training programs...');
+  const [training1, training2, training3] = await Training.insertMany([
+    {
+      title: 'ESG Fundamentals Workshop',
+      description: 'Introduction to Environmental, Social, and Governance principles and reporting standards.',
+      department: engineering._id,
+      startDate: new Date('2025-07-01'),
+      endDate: new Date('2025-08-15'),
+    },
+    {
+      title: 'Carbon Footprint Reduction Training',
+      description: 'Hands-on workshop on measuring and reducing corporate carbon footprint.',
+      department: operations._id,
+      startDate: new Date('2025-06-15'),
+      endDate: new Date('2025-07-30'),
+    },
+    {
+      title: 'Diversity & Inclusion Awareness',
+      description: 'Promoting inclusive workplace culture, unconscious bias training, and anti-discrimination protocols.',
+      department: hr._id,
+      startDate: new Date('2025-08-01'),
+      endDate: new Date('2025-09-30'),
+    },
+  ]);
+
+  console.log('🎓 Seeding training completions...');
+  await TrainingCompletion.insertMany([
+    { trainingId: training1._id, employeeId: emp1._id, status: 'completed', completionDate: new Date('2025-07-20') },
+    { trainingId: training1._id, employeeId: admin._id, status: 'assigned' },
+    { trainingId: training2._id, employeeId: emp2._id, status: 'completed', completionDate: new Date('2025-07-10') },
+    { trainingId: training2._id, employeeId: emp1._id, status: 'assigned' },
+    { trainingId: training2._id, employeeId: manager1._id, status: 'assigned' },
+    { trainingId: training3._id, employeeId: emp3._id, status: 'assigned' },
+    { trainingId: training3._id, employeeId: emp1._id, status: 'completed', completionDate: new Date('2025-08-25') },
   ]);
 
   console.log('\n✅ Seeding complete!');

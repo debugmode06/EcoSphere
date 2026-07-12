@@ -22,7 +22,7 @@ function RemarksModal({ title, onConfirm, onClose, actionLabel, actionClass }) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 glass-overlay">
       <div className="card w-full max-w-sm p-6 space-y-4 bg-surface">
-        <h3 className="font-bold text-slate-100">{title}</h3>
+        <h3 className="font-bold text-slate-900">{title}</h3>
         {error && (
           <div className="bg-red-900/30 border border-red-700/50 text-red-200 text-sm px-3 py-2 rounded-xl">
             {error}
@@ -60,7 +60,7 @@ export default function ApprovalTable({ participations, onApprove, onReject }) {
 
   if (participations.length === 0) {
     return (
-      <div className="card p-10 text-center text-slate-400">
+      <div className="card p-10 text-center text-slate-500">
         No pending participations to review.
       </div>
     );
@@ -84,15 +84,15 @@ export default function ApprovalTable({ participations, onApprove, onReject }) {
             {participations.map((p) => (
               <tr key={p._id}>
                 <td>
-                  <div className="font-medium text-slate-100">{p.employeeId?.name || '—'}</div>
-                  <div className="text-xs text-slate-400">{p.employeeId?.email}</div>
+                  <div className="font-medium text-slate-900">{p.employeeId?.name || '—'}</div>
+                  <div className="text-xs text-slate-500">{p.employeeId?.email}</div>
                 </td>
-                <td className="text-slate-200">{p.csrActivityId?.title || '—'}</td>
-                <td className="text-slate-400 text-xs">{new Date(p.joinedDate).toLocaleDateString()}</td>
+                <td className="text-slate-800">{p.csrActivityId?.title || '—'}</td>
+                <td className="text-slate-500 text-xs">{new Date(p.joinedDate).toLocaleDateString()}</td>
                 <td>
                   {p.proofDocument ? (
                     <a href={p.proofDocument} target="_blank" rel="noopener noreferrer"
-                      className="flex items-center gap-1 text-brand-400 hover:text-brand-300 text-sm transition-colors">
+                      className="flex items-center gap-1 text-brand-600 hover:text-brand-300 text-sm transition-colors">
                       <FileText className="w-3.5 h-3.5" /> View
                     </a>
                   ) : (
@@ -107,7 +107,7 @@ export default function ApprovalTable({ participations, onApprove, onReject }) {
                     <div className="flex items-center justify-end gap-2">
                       <button
                         onClick={() => setModal({ type: 'approve', id: p._id })}
-                        className="text-brand-400 hover:text-brand-300 transition-colors p-1.5"
+                        className="text-brand-600 hover:text-brand-300 transition-colors p-1.5"
                         title="Approve"
                       >
                         <CheckCircle className="w-4 h-4" />

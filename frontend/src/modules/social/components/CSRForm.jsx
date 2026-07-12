@@ -49,10 +49,10 @@ export default function CSRForm({ activity, categories, departments, onSubmit, o
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 glass-overlay overflow-y-auto">
       <div className="card w-full max-w-2xl bg-surface p-6 my-4 space-y-4 relative">
         <div className="flex items-center justify-between">
-          <h2 className="text-xl font-bold text-slate-100">
+          <h2 className="text-xl font-bold text-slate-900">
             {activity ? 'Edit CSR Activity' : 'Create CSR Activity'}
           </h2>
-          <button onClick={onClose} className="text-slate-400 hover:text-slate-200 transition-colors">
+          <button onClick={onClose} className="text-slate-500 hover:text-slate-800 transition-colors">
             <X className="w-5 h-5" />
           </button>
         </div>
@@ -111,7 +111,7 @@ export default function CSRForm({ activity, categories, departments, onSubmit, o
               onChange={set('evidenceRequired')}
               disabled={loading}
             />
-            <label htmlFor="evidenceRequired" className="text-sm text-slate-300 cursor-pointer">
+            <label htmlFor="evidenceRequired" className="text-sm text-slate-700 cursor-pointer">
               Require proof document for approval
             </label>
           </div>

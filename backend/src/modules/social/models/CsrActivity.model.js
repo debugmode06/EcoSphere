@@ -1,9 +1,3 @@
-const mongoose = require('mongoose');
-
-// TODO (Person 2): Define CsrActivity schema
-// Fields: title (required), category (ref), description, department (ref), date (required),
-//         status (default 'Planned'), evidenceRequired (Boolean), pointsOnCompletion (Number)
-
-const csrActivitySchema = new mongoose.Schema({}, { timestamps: true });
-
-module.exports = mongoose.model('CsrActivity', csrActivitySchema);
+// Re-export the full CsrActivity model defined in CSRActivity.js
+// This stub was replaced to avoid Mongoose OverwriteModelError.
+module.exports = require('./CSRActivity');

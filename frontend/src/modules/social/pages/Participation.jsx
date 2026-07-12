@@ -27,9 +27,9 @@ export default function Participation() {
       )}
 
       {loading ? (
-        <div className="text-center py-10 text-slate-400">Loading your participations...</div>
+        <div className="text-center py-10 text-slate-500">Loading your participations...</div>
       ) : participations.length === 0 ? (
-        <div className="card p-10 text-center text-slate-400">
+        <div className="card p-10 text-center text-slate-500">
           You haven't joined any CSR activities yet. Visit <strong>CSR Activities</strong> to get started.
         </div>
       ) : (
@@ -50,17 +50,17 @@ export default function Participation() {
               {participations.map((p) => (
                 <tr key={p._id}>
                   <td>
-                    <div className="font-medium text-slate-100">{p.csrActivityId?.title || '—'}</div>
+                    <div className="font-medium text-slate-900">{p.csrActivityId?.title || '—'}</div>
                     {p.csrActivityId?.evidenceRequired && (
                       <div className="text-xs text-yellow-400 mt-0.5">⚠️ Proof required</div>
                     )}
                   </td>
-                  <td className="text-slate-300 text-sm">{p.csrActivityId?.location || '—'}</td>
-                  <td className="text-slate-400 text-xs">{new Date(p.joinedDate).toLocaleDateString()}</td>
+                  <td className="text-slate-700 text-sm">{p.csrActivityId?.location || '—'}</td>
+                  <td className="text-slate-500 text-xs">{new Date(p.joinedDate).toLocaleDateString()}</td>
                   <td>
                     {p.proofDocument ? (
                       <a href={p.proofDocument} target="_blank" rel="noopener noreferrer"
-                        className="flex items-center gap-1 text-brand-400 hover:text-brand-300 text-sm transition-colors">
+                        className="flex items-center gap-1 text-brand-600 hover:text-brand-300 text-sm transition-colors">
                         <FileText className="w-3.5 h-3.5" /> View
                       </a>
                     ) : (
@@ -70,14 +70,14 @@ export default function Participation() {
                   <td>
                     <span className={STATUS_STYLE[p.status] || 'badge-blue'}>{p.status}</span>
                   </td>
-                  <td className="text-slate-400 text-xs max-w-xs truncate">
+                  <td className="text-slate-500 text-xs max-w-xs truncate">
                     {p.remarks || '—'}
                   </td>
                   <td className="text-right">
                     {p.status === 'pending' && (
                       <button
                         onClick={() => setUploading(p)}
-                        className="text-brand-400 hover:text-brand-300 transition-colors p-1.5 inline-flex"
+                        className="text-brand-600 hover:text-brand-300 transition-colors p-1.5 inline-flex"
                         title="Upload Proof"
                       >
                         <Upload className="w-4 h-4" />

@@ -9,7 +9,7 @@ export default function Approvals() {
     <div className="p-6 max-w-7xl mx-auto space-y-6">
       <div className="flex items-center gap-3">
         <div className="w-10 h-10 bg-brand-600/20 rounded-xl flex items-center justify-center">
-          <ClipboardCheck className="w-5 h-5 text-brand-400" />
+          <ClipboardCheck className="w-5 h-5 text-brand-600" />
         </div>
         <div>
           <h1 className="page-header mb-0">Participation Approvals</h1>
@@ -31,7 +31,7 @@ export default function Approvals() {
       )}
 
       {loading ? (
-        <div className="text-center py-10 text-slate-400">Loading approvals...</div>
+        <div className="text-center py-10 text-slate-500">Loading approvals...</div>
       ) : (
         <ApprovalTable
           participations={participations}

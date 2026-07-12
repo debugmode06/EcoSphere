@@ -40,7 +40,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col items-center justify-center p-4 relative overflow-hidden">
+    <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col items-center justify-center p-4 relative overflow-hidden">
       {/* Abstract Background Glows */}
       <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-brand-500/10 rounded-full blur-[120px] pointer-events-none" />
       <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-emerald-500/10 rounded-full blur-[120px] pointer-events-none" />
@@ -54,13 +54,13 @@ export default function LoginPage() {
           <h2 className="mt-6 text-3xl font-extrabold tracking-tight gradient-text">
             Welcome to EcoSphere
           </h2>
-          <p className="mt-2 text-sm text-slate-400">
+          <p className="mt-2 text-sm text-slate-600">
             ESG Management &amp; Sustainability Platform
           </p>
         </div>
 
         {/* Login Card */}
-        <div className="card p-8 bg-slate-900/80 backdrop-blur-md relative border-slate-800">
+        <div className="card p-8 bg-white/80 backdrop-blur-md relative border-slate-200">
           {error && (
             <div className="mb-4 bg-red-900/30 border border-red-700/50 text-red-200 text-sm px-4 py-2.5 rounded-xl">
               {error}
@@ -118,7 +118,7 @@ export default function LoginPage() {
           </form>
 
           {/* Demo Credentials Quick Fill */}
-          <div className="mt-8 pt-6 border-t border-slate-800">
+          <div className="mt-8 pt-6 border-t border-slate-200">
             <p className="text-slate-500 text-xs font-semibold uppercase tracking-wider mb-3 text-center">
               Demo Credentials
             </p>
@@ -128,16 +128,16 @@ export default function LoginPage() {
                   key={demo.role}
                   type="button"
                   onClick={() => handleDemoClick(demo)}
-                  className="w-full flex items-center justify-between p-2.5 rounded-xl border border-slate-800/80 bg-slate-900/30 hover:bg-slate-900/60 hover:border-slate-700/50 text-left transition-all duration-150 group"
+                  className="w-full flex items-center justify-between p-2.5 rounded-xl border border-slate-200 bg-white hover:bg-slate-50 hover:border-brand-200 text-left transition-all duration-150 group"
                 >
                   <div className="flex items-center gap-2">
-                    <User className="w-3.5 h-3.5 text-slate-500 group-hover:text-brand-400" />
+                    <User className="w-3.5 h-3.5 text-slate-500 group-hover:text-brand-500" />
                     <div>
-                      <p className="text-slate-300 text-xs font-medium">{demo.role}</p>
+                      <p className="text-slate-700 text-xs font-medium">{demo.role}</p>
                       <p className="text-slate-500 text-[10px]">{demo.email}</p>
                     </div>
                   </div>
-                  <span className="text-[10px] text-brand-400/80 bg-brand-500/10 border border-brand-500/20 px-2 py-0.5 rounded-md font-mono">
+                  <span className="text-[10px] text-brand-600 bg-brand-50 border border-brand-100 px-2 py-0.5 rounded-md font-mono">
                     Quick Fill
                   </span>
                 </button>
