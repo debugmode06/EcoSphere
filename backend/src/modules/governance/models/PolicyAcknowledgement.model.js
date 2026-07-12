@@ -1,11 +1,33 @@
 const mongoose = require('mongoose');
 
-// TODO (Person 3): Define PolicyAcknowledgement schema
-// Fields: policy (ref, required), employee (ref, required), acknowledgedDate (default now)
-// IMPORTANT: Add compound unique index { policy: 1, employee: 1 } to prevent duplicate acknowledgements
+const policyAckSchema = new mongoose.Schema(
+  {
+    policy: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'EsgPolicy',
+      required: [true, 'Policy reference is required'],
+      index: true,
+    },
+    employee: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Employee',
+      required: [true, 'Employee reference is required'],
+      index: true,
+    },
+    acknowledgedDate: {
+      type: Date,
+      default: Date.now,
+    },
+    feedback: {
+      type: String,
+      trim: true,
+      default: '',
+    },
+  },
+  { timestamps: true }
+);
 
-const policyAckSchema = new mongoose.Schema({}, { timestamps: true });
-
-// policyAckSchema.index({ policy: 1, employee: 1 }, { unique: true });
+// Compound unique index — prevents duplicate acknowledgements
+policyAckSchema.index({ policy: 1, employee: 1 }, { unique: true });
 
 module.exports = mongoose.model('PolicyAcknowledgement', policyAckSchema);
