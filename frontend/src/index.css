@@ -9,7 +9,7 @@
 
   body {
     background-color: #f8fafc;
-    color: #0f172a;
+    color: #d9dadc;
     font-family: 'Inter', system-ui, sans-serif;
   }
 
@@ -17,13 +17,16 @@
     width: 6px;
     height: 6px;
   }
+
   ::-webkit-scrollbar-track {
     background: #f1f5f9;
   }
+
   ::-webkit-scrollbar-thumb {
     background: #cbd5e1;
     border-radius: 3px;
   }
+
   ::-webkit-scrollbar-thumb:hover {
     background: #94a3b8;
   }
@@ -47,8 +50,7 @@
   }
 
   .input {
-    @apply w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-800 placeholder-slate-400
-      focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition-all duration-200;
+    @apply w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition-all duration-200;
   }
 
   .label {
@@ -58,12 +60,15 @@
   .badge-green {
     @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700 border border-emerald-200/50;
   }
+
   .badge-yellow {
     @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-50 text-amber-700 border border-amber-200/50;
   }
+
   .badge-red {
     @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-rose-50 text-rose-700 border border-rose-200/50;
   }
+
   .badge-blue {
     @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold bg-sky-50 text-sky-700 border border-sky-200/50;
   }
@@ -79,6 +84,7 @@
   .page-header {
     @apply text-2xl font-bold text-slate-800 mb-1;
   }
+
   .page-subheader {
     @apply text-slate-500 text-sm mb-6;
   }
@@ -90,15 +96,19 @@
   table {
     @apply w-full text-sm;
   }
+
   thead tr {
     @apply border-b border-slate-200;
   }
+
   th {
     @apply px-4 py-3 text-left text-xs font-bold text-slate-500 uppercase tracking-wider;
   }
+
   td {
     @apply px-4 py-3 text-slate-700;
   }
+
   tbody tr {
     @apply border-b border-slate-100 hover:bg-slate-50/50 transition-colors;
   }
@@ -120,9 +130,17 @@
 
 /* Pulse glow */
 @keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.4); }
-  50% { box-shadow: 0 0 0 8px rgba(34, 197, 94, 0); }
+
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.4);
+  }
+
+  50% {
+    box-shadow: 0 0 0 8px rgba(34, 197, 94, 0);
+  }
 }
+
 .pulse-glow {
   animation: pulse-glow 2s infinite;
 }

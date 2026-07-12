@@ -21,8 +21,8 @@ const recalculateScores = asyncHandler(async (req, res) => {
 });
 
 const getDepartments = asyncHandler(async (req, res) => {
-  const departments = await Department.find({});
-  res.status(200).json(departments);
+  const departments = await Department.find({ status: 'Active' });
+  res.status(200).json({ departments });
 });
 
 const createDepartment = asyncHandler(async (req, res) => {
