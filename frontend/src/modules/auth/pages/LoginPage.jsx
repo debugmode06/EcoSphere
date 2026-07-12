@@ -1,17 +1,13 @@
 import { useState } from 'react';
 import { useAuth } from '../../../context/AuthContext';
-<<<<<<< HEAD
 import { useNavigate } from 'react-router-dom';
-import { ShieldCheck, Mail, Lock, AlertCircle, ArrowRight, User } from 'lucide-react';
-=======
-import { Globe, LogIn } from 'lucide-react';
+import { Globe, LogIn, User } from 'lucide-react';
 
 const DEMO_CREDENTIALS = [
   { role: 'ADMIN', email: 'admin@ecosphere.com', password: 'Admin@123' },
   { role: 'MANAGER', email: 'manager1@ecosphere.com', password: 'Manager@123' },
   { role: 'EMPLOYEE', email: 'emp1@ecosphere.com', password: 'Emp@123' },
 ];
->>>>>>> 6b88b22 (Sync after remote updates)
 
 export default function LoginPage() {
   const { login } = useAuth();
@@ -29,11 +25,7 @@ export default function LoginPage() {
     setError(null);
     try {
       await login(email, password);
-<<<<<<< HEAD
-      // AppRouter redirects to /dashboard by default based on role, or we can force navigate:
-      // navigate('/gamification/challenges'); 
-=======
->>>>>>> 6b88b22 (Sync after remote updates)
+      // AppRouter redirects based on role automatically
     } catch (err) {
       setError(err.response?.data?.message || err.message || 'Login failed');
     } finally {
@@ -63,7 +55,7 @@ export default function LoginPage() {
             Welcome to EcoSphere
           </h2>
           <p className="mt-2 text-sm text-slate-400">
-            ESG Management & Sustainability Platform
+            ESG Management &amp; Sustainability Platform
           </p>
         </div>
 
@@ -125,54 +117,32 @@ export default function LoginPage() {
             </button>
           </form>
 
-<<<<<<< HEAD
-        {/* Demo Credentials Quick Fill */}
-        <div className="mt-8 pt-6 border-t border-slate-800">
-          <p className="text-slate-500 text-xs font-semibold uppercase tracking-wider mb-3">
-            Demo Credentials
-          </p>
-          <div className="space-y-2">
-            {[
-              { role: 'ADMIN', email: 'admin@ecosphere.com', pw: 'Admin@123' },
-              { role: 'MANAGER', email: 'manager1@ecosphere.com', pw: 'Manager@123' },
-              { role: 'EMPLOYEE', email: 'emp1@ecosphere.com', pw: 'Emp@123' },
-            ].map((cred) => (
-              <button
-                key={cred.role}
-                type="button"
-                onClick={() => handleQuickFill(cred.email, cred.pw)}
-                className="w-full flex items-center justify-between p-2.5 rounded-xl border border-slate-800/80 bg-slate-900/30 hover:bg-slate-900/60 hover:border-slate-700/50 text-left transition-all duration-150 group"
-              >
-                <div className="flex items-center gap-2">
-                  <User className="w-3.5 h-3.5 text-slate-500 group-hover:text-brand-400" />
-                  <div>
-                    <p className="text-slate-300 text-xs font-medium">{cred.role}</p>
-                    <p className="text-slate-500 text-[10px]">{cred.email}</p>
-                  </div>
-                </div>
-                <span className="text-[10px] text-brand-400/80 bg-brand-500/10 border border-brand-500/20 px-2 py-0.5 rounded-md font-mono">
-                  Quick Fill
-                </span>
-              </button>
-            ))}
-=======
-          {/* Quick Demo Credentials */}
+          {/* Demo Credentials Quick Fill */}
           <div className="mt-8 pt-6 border-t border-slate-800">
-            <span className="text-xs font-semibold uppercase tracking-wider text-slate-500 block mb-3 text-center">
-              Quick Connect (Demo Credentials)
-            </span>
-            <div className="grid grid-cols-3 gap-2">
+            <p className="text-slate-500 text-xs font-semibold uppercase tracking-wider mb-3 text-center">
+              Demo Credentials
+            </p>
+            <div className="space-y-2">
               {DEMO_CREDENTIALS.map((demo) => (
                 <button
                   key={demo.role}
+                  type="button"
                   onClick={() => handleDemoClick(demo)}
-                  className="px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 border border-slate-700/50 rounded-lg text-[11px] font-medium text-slate-300 hover:text-slate-100 transition-all text-center uppercase"
+                  className="w-full flex items-center justify-between p-2.5 rounded-xl border border-slate-800/80 bg-slate-900/30 hover:bg-slate-900/60 hover:border-slate-700/50 text-left transition-all duration-150 group"
                 >
-                  {demo.role}
+                  <div className="flex items-center gap-2">
+                    <User className="w-3.5 h-3.5 text-slate-500 group-hover:text-brand-400" />
+                    <div>
+                      <p className="text-slate-300 text-xs font-medium">{demo.role}</p>
+                      <p className="text-slate-500 text-[10px]">{demo.email}</p>
+                    </div>
+                  </div>
+                  <span className="text-[10px] text-brand-400/80 bg-brand-500/10 border border-brand-500/20 px-2 py-0.5 rounded-md font-mono">
+                    Quick Fill
+                  </span>
                 </button>
               ))}
             </div>
->>>>>>> 6b88b22 (Sync after remote updates)
           </div>
         </div>
       </div>
