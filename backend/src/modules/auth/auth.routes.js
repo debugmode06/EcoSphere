@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
+const { protect } = require('../../middleware/auth');
+const { register, login, getMe } = require('./auth.controller');
 
-// TODO: Mount auth routes
-// POST /register
-// POST /login
-// GET  /me  (protected)
+router.post('/register', register);
+router.post('/login', login);
+router.get('/me', protect, getMe);
 
 module.exports = router;

@@ -1,8 +1,12 @@
 const mongoose = require('mongoose');
 
-// TODO (Person 4): Define Department schema
-// Fields: name (required), code (unique, required), head, parentDepartment (self-ref), employeeCount, status
-
-const departmentSchema = new mongoose.Schema({}, { timestamps: true });
+const departmentSchema = new mongoose.Schema({
+  name: { type: String, required: true },
+  code: { type: String, required: true, unique: true },
+  head: String,
+  parentDepartment: { type: mongoose.Schema.Types.ObjectId, ref: 'Department' },
+  employeeCount: { type: Number, default: 0 },
+  status: { type: String, default: 'Active' }
+}, { timestamps: true });
 
 module.exports = mongoose.model('Department', departmentSchema);

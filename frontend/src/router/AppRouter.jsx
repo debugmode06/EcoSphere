@@ -24,9 +24,15 @@ import AuditsPage from '../modules/governance/pages/AuditsPage';
 import CompliancePage from '../modules/governance/pages/CompliancePage';
 
 // Gamification
-import ChallengesPage from '../modules/gamification/pages/ChallengesPage';
-import BadgesPage from '../modules/gamification/pages/BadgesPage';
-import RewardsPage from '../modules/gamification/pages/RewardsPage';
+import ChallengeList from '../modules/gamification/pages/ChallengeList';
+import ChallengeCreateEdit from '../modules/gamification/pages/ChallengeCreateEdit';
+import ChallengeDetails from '../modules/gamification/pages/ChallengeDetails';
+import MyChallenges from '../modules/gamification/pages/MyChallenges';
+import BadgeList from '../modules/gamification/pages/BadgeList';
+import RewardStore from '../modules/gamification/pages/RewardStore';
+import RewardHistory from '../modules/gamification/pages/RewardHistory';
+import Leaderboard from '../modules/gamification/pages/Leaderboard';
+import ParticipationReview from '../modules/gamification/pages/ParticipationReview';
 
 function ProtectedRoute({ children }) {
   const { isAuthenticated } = useAuth();
@@ -56,9 +62,16 @@ export default function AppRouter() {
         <Route path="/governance/audits" element={<ProtectedRoute><AuditsPage /></ProtectedRoute>} />
         <Route path="/governance/compliance" element={<ProtectedRoute><CompliancePage /></ProtectedRoute>} />
 
-        <Route path="/gamification/challenges" element={<ProtectedRoute><ChallengesPage /></ProtectedRoute>} />
-        <Route path="/gamification/badges" element={<ProtectedRoute><BadgesPage /></ProtectedRoute>} />
-        <Route path="/gamification/rewards" element={<ProtectedRoute><RewardsPage /></ProtectedRoute>} />
+        <Route path="/gamification/challenges" element={<ProtectedRoute><ChallengeList /></ProtectedRoute>} />
+        <Route path="/gamification/challenges/create" element={<ProtectedRoute><ChallengeCreateEdit /></ProtectedRoute>} />
+        <Route path="/gamification/challenges/:id/edit" element={<ProtectedRoute><ChallengeCreateEdit /></ProtectedRoute>} />
+        <Route path="/gamification/challenges/:id" element={<ProtectedRoute><ChallengeDetails /></ProtectedRoute>} />
+        <Route path="/gamification/my-challenges" element={<ProtectedRoute><MyChallenges /></ProtectedRoute>} />
+        <Route path="/gamification/badges" element={<ProtectedRoute><BadgeList /></ProtectedRoute>} />
+        <Route path="/gamification/rewards" element={<ProtectedRoute><RewardStore /></ProtectedRoute>} />
+        <Route path="/gamification/rewards/history" element={<ProtectedRoute><RewardHistory /></ProtectedRoute>} />
+        <Route path="/gamification/leaderboard" element={<ProtectedRoute><Leaderboard /></ProtectedRoute>} />
+        <Route path="/gamification/review" element={<ProtectedRoute><ParticipationReview /></ProtectedRoute>} />
 
         <Route path="*" element={<Navigate to={isAuthenticated ? '/dashboard' : '/login'} replace />} />
       </Routes>
