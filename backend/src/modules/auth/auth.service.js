@@ -28,7 +28,7 @@ async function register({ name, email, password, role, departmentId }) {
  * Login an employee and return a token and the user document
  */
 async function login({ email, password }) {
-  const employee = await Employee.findOne({ email }).populate('department').populate('badges');
+  const employee = await Employee.findOne({ email }).select('+passwordHash').populate('department').populate('badges');
   if (!employee) {
     throw new Error('Invalid email or password');
   }
