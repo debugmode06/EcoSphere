@@ -1,61 +1,12 @@
 import { NavLink } from 'react-router-dom';
 import {
   LayoutDashboard, Leaf, Users, ShieldCheck, Trophy,
-  BarChart2, Settings, ChevronDown, Globe, CheckSquare
   BarChart2, Settings, ChevronDown, Globe, ClipboardList,
   Tag, Activity, ClipboardCheck
 } from 'lucide-react';
 import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
 
-const navGroups = [
-  {
-    label: 'Overview',
-    items: [
-      { to: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
-    ],
-  },
-  {
-    label: 'Environmental',
-    items: [
-      { to: '/environmental/emissions', icon: Leaf, label: 'Emissions' },
-      { to: '/environmental/goals', icon: BarChart2, label: 'Goals' },
-    ],
-  },
-  {
-    label: 'Social',
-    items: [
-      { to: '/social/activities', icon: Users, label: 'CSR Activities' },
-      { to: '/social/participations', icon: Users, label: 'Participations', roles: ['ADMIN', 'MANAGER'] },
-    ],
-  },
-  {
-    label: 'Governance',
-    items: [
-      { to: '/governance/policies', icon: ShieldCheck, label: 'Policies' },
-      { to: '/governance/audits', icon: ShieldCheck, label: 'Audits' },
-      { to: '/governance/compliance', icon: ShieldCheck, label: 'Compliance' },
-    ],
-  },
-  {
-    label: 'Gamification',
-    items: [
-      { to: '/gamification/challenges', icon: Trophy, label: 'Challenges' },
-      { to: '/gamification/my-challenges', icon: Trophy, label: 'My Challenges', roles: ['EMPLOYEE'] },
-      { to: '/gamification/review', icon: CheckSquare, label: 'Review Submissions', roles: ['ADMIN', 'MANAGER'] },
-      { to: '/gamification/badges', icon: Trophy, label: 'Badges' },
-      { to: '/gamification/rewards', icon: Trophy, label: 'Rewards' },
-      { to: '/gamification/leaderboard', icon: Trophy, label: 'Leaderboard' },
-    ],
-  },
-  {
-    label: 'Reports',
-    items: [
-      { to: '/core/reports', icon: BarChart2, label: 'Reports' },
-      { to: '/core/settings', icon: Settings, label: 'Settings', roles: ['ADMIN'] },
-    ],
-  },
-];
 function buildNavGroups(role) {
   const isAdmin = role === 'ADMIN';
   const isManager = role === 'MANAGER';
@@ -129,9 +80,10 @@ function NavGroup({ group }) {
               key={to}
               to={to}
               className={({ isActive }) =>
-                `flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-semibold transition-all duration-150 ${isActive
-                  ? 'bg-brand-50 text-brand-700 border border-brand-200/60'
-                  : 'text-slate-650 hover:text-slate-900 hover:bg-slate-50'
+                `flex items-center gap-3 px-3 py-2 rounded-xl text-sm font-semibold transition-all duration-150 ${
+                  isActive
+                    ? 'bg-brand-50 text-brand-700 border border-brand-200/60'
+                    : 'text-slate-650 hover:text-slate-900 hover:bg-slate-50'
                 }`
               }
             >
@@ -146,17 +98,6 @@ function NavGroup({ group }) {
 }
 
 export default function Sidebar() {
-  const { role } = useAuth();
-
-  const filteredGroups = navGroups
-    .map((g) => {
-      const items = g.items.filter((item) => {
-        if (item.roles && !item.roles.includes(role)) return false;
-        return true;
-      });
-      return { ...g, items };
-    })
-    .filter((g) => g.items.length > 0);
   const { role, user, logout } = useAuth();
   const navGroups = buildNavGroups(role);
 
@@ -175,7 +116,7 @@ export default function Sidebar() {
 
       {/* Nav */}
       <nav className="flex-1 px-3 py-4 space-y-2 overflow-y-auto">
-        {filteredGroups.map((g) => (
+        {navGroups.map((g) => (
           <NavGroup key={g.label} group={g} />
         ))}
       </nav>
@@ -183,21 +124,23 @@ export default function Sidebar() {
       {/* Footer */}
       <div className="px-3 py-3 border-t border-slate-200/80 text-xs text-slate-400 text-center">
         EcoSphere v1.0
-        {/* User Info + Logout */}
-        <div className="px-3 py-3 border-t border-slate-700/50 space-y-2">
-          {user && (
-            <div className="px-2 py-1.5 text-xs">
-              <div className="text-slate-200 font-medium truncate">{user.name}</div>
-              <div className="text-slate-500 truncate">{user.role}</div>
-            </div>
-          )}
-          <button
-            onClick={logout}
-            className="w-full text-left px-3 py-2 text-xs text-slate-400 hover:text-red-400 hover:bg-red-900/10 rounded-xl transition-all"
-          >
-            Sign out
-          </button>
-        </div>
+      </div>
+
+      {/* User Info + Logout */}
+      <div className="px-3 py-3 border-t border-slate-700/50 space-y-2">
+        {user && (
+          <div className="px-2 py-1.5 text-xs">
+            <div className="text-slate-600 font-medium truncate">{user.name}</div>
+            <div className="text-slate-400 truncate">{user.role}</div>
+          </div>
+        )}
+        <button
+          onClick={logout}
+          className="w-full text-left px-3 py-2 text-xs text-slate-400 hover:text-red-400 hover:bg-red-900/10 rounded-xl transition-all"
+        >
+          Sign out
+        </button>
+      </div>
     </aside>
   );
 }
