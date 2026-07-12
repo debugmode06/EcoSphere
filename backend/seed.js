@@ -1,9 +1,9 @@
 /**
- * EcoSphere Seed Script
+ * EcoSphere Gamification & Governance Module Seed Script
  * Run: node seed.js
  *
- * Seeds: Departments, Employees, EsgPolicies, PolicyAcknowledgements,
- *        Audits, ComplianceIssues
+ * Seeds: Departments, Categories, Employees, EsgPolicies, PolicyAcknowledgements,
+ *        Audits, ComplianceIssues, Challenges, Badges, Rewards
  */
 
 require('dotenv').config();
@@ -12,11 +12,18 @@ const bcrypt = require('bcryptjs');
 
 // Models
 const Department = require('./src/modules/core/models/Department.model');
+const Category = require('./src/modules/core/models/Category.model');
 const Employee = require('./src/modules/auth/models/Employee.model');
 const EsgPolicy = require('./src/modules/governance/models/EsgPolicy.model');
 const PolicyAcknowledgement = require('./src/modules/governance/models/PolicyAcknowledgement.model');
 const Audit = require('./src/modules/governance/models/Audit.model');
 const ComplianceIssue = require('./src/modules/governance/models/ComplianceIssue.model');
+const Challenge = require('./src/modules/gamification/models/Challenge.model');
+const ChallengeParticipation = require('./src/modules/gamification/models/ChallengeParticipation.model');
+const Badge = require('./src/modules/gamification/models/Badge.model');
+const Reward = require('./src/modules/gamification/models/Reward.model');
+
+const hash = (pw) => bcrypt.hashSync(pw, 10);
 
 async function seed() {
   console.log('🌱 Connecting to MongoDB Atlas...');
@@ -27,11 +34,16 @@ async function seed() {
   console.log('🧹 Clearing existing data...');
   await Promise.all([
     Department.deleteMany({}),
+    Category.deleteMany({}),
     Employee.deleteMany({}),
     EsgPolicy.deleteMany({}),
     PolicyAcknowledgement.deleteMany({}),
     Audit.deleteMany({}),
     ComplianceIssue.deleteMany({}),
+    Challenge.deleteMany({}),
+    ChallengeParticipation.deleteMany({}),
+    Badge.deleteMany({}),
+    Reward.deleteMany({}),
   ]);
 
   // ── Departments ──────────────────────────────────────────────────────────
@@ -42,9 +54,14 @@ async function seed() {
     { name: 'Human Resources', code: 'HR', head: 'Carol Mehta', employeeCount: 5, status: 'Active' },
   ]);
 
+  // ── Categories ──────────────────────────────────────────────────────────
+  console.log('🏷️ Seeding categories...');
+  const [challengeCat] = await Category.insertMany([
+    { name: 'Green Initiative', type: 'CHALLENGE' }
+  ]);
+
   // ── Employees ────────────────────────────────────────────────────────────
   console.log('👥 Seeding employees...');
-  const hash = (pw) => bcrypt.hashSync(pw, 10);
 
   const [admin, manager1, emp1, emp2, emp3] = await Employee.insertMany([
     {
@@ -230,6 +247,58 @@ async function seed() {
     },
   ]);
 
+  // ── Challenges ─────────────────────────────────────────────────────────────
+  console.log('🏆 Seeding challenges...');
+  await Challenge.insertMany([
+    {
+      title: 'Plant 10 Trees',
+      category: challengeCat._id,
+      description: 'Plant 10 trees in a local park and upload a photo as verification.',
+      xp: 100,
+      difficulty: 'Easy',
+      evidenceRequired: true,
+      deadline: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000), // 30 days
+      status: 'ACTIVE'
+    },
+    {
+      title: 'Save Electricity Month',
+      category: challengeCat._id,
+      description: 'Turn off all non-essential electric appliances during lunch breaks for 20 days.',
+      xp: 150,
+      difficulty: 'Medium',
+      evidenceRequired: false,
+      deadline: new Date(Date.now() + 15 * 24 * 60 * 60 * 1000),
+      status: 'ACTIVE'
+    },
+    {
+      title: 'Cycle to Work Challenge',
+      category: challengeCat._id,
+      description: 'Commute by bicycle for at least 10 days this month.',
+      xp: 250,
+      difficulty: 'Hard',
+      evidenceRequired: true,
+      deadline: new Date(Date.now() + 45 * 24 * 60 * 60 * 1000),
+      status: 'ACTIVE'
+    }
+  ]);
+
+  // ── Badges ─────────────────────────────────────────────────────────────────
+  console.log('🏅 Seeding badges...');
+  await Badge.insertMany([
+    { name: 'Eco Starter', description: 'Cross 100 XP to start your journey', unlockType: 'xp', threshold: 100, icon: '🌱' },
+    { name: 'Green Hero', description: 'Reach 300 XP and save the ecosystem', unlockType: 'xp', threshold: 300, icon: '🏆' },
+    { name: 'Challenge Master', description: 'Complete 5 challenges successfully', unlockType: 'challengeCount', threshold: 5, icon: '👑' }
+  ]);
+
+  // ── Rewards ────────────────────────────────────────────────────────────────
+  console.log('🎁 Seeding rewards...');
+  await Reward.insertMany([
+    { name: 'Coffee Coupon', description: 'Free starbucks reusable cup hot drink coupon', pointsRequired: 50, stock: 10, status: 'Active' },
+    { name: 'Movie Ticket', description: 'Eco-friendly cinema ticket voucher', pointsRequired: 150, stock: 5, status: 'Active' },
+    { name: 'Lunch Voucher', description: 'Organic farm-to-table lunch voucher', pointsRequired: 200, stock: 3, status: 'Active' }
+  ]);
+
+
   console.log('\n✅ Seeding complete!');
   console.log('─────────────────────────────────────────────────────────');
   console.log('  Default login credentials:');
@@ -245,6 +314,6 @@ async function seed() {
 }
 
 seed().catch((err) => {
-  console.error('❌  Seed failed:', err);
+  console.error('❌ Seed failed:', err);
   process.exit(1);
 });

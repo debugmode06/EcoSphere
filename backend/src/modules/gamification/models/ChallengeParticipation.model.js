@@ -1,10 +1,14 @@
 const mongoose = require('mongoose');
 
-// TODO (Person 4): Define ChallengeParticipation schema
-// Fields: challenge (ref, required), employee (ref, required), progress, proofUrl,
-//         approval enum (PENDING/APPROVED/REJECTED), xpAwarded
-// Business rule: on APPROVED → award xp to employee → check badge thresholds
+const challengeParticipationSchema = new mongoose.Schema({
+  challenge: { type: mongoose.Schema.Types.ObjectId, ref: 'Challenge', required: true },
+  employee: { type: mongoose.Schema.Types.ObjectId, ref: 'Employee', required: true },
+  progress: { type: Number, default: 0 },
+  proofUrl: String,
+  approval: { type: String, enum: ['PENDING', 'APPROVED', 'REJECTED'], default: 'PENDING' },
+  xpAwarded: { type: Number, default: 0 }
+}, { timestamps: true });
 
-const challengeParticipationSchema = new mongoose.Schema({}, { timestamps: true });
+challengeParticipationSchema.index({ challenge: 1, employee: 1 }, { unique: true });
 
 module.exports = mongoose.model('ChallengeParticipation', challengeParticipationSchema);

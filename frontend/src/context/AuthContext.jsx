@@ -41,7 +41,7 @@ export function AuthProvider({ children }) {
   const role = user?.role || decoded?.role;
 
   return (
-    <AuthContext.Provider value={{ token, user, role, isAuthenticated, login, logout }}>
+    <AuthContext.Provider value={{ token, user, setUser, role, isAuthenticated, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

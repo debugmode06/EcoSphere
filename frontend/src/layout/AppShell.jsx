@@ -12,8 +12,12 @@ const PAGE_TITLES = {
   '/governance/audits': 'Audits',
   '/governance/compliance': 'Compliance Issues',
   '/gamification/challenges': 'Challenges',
+  '/gamification/challenges/create': 'Create Challenge',
+  '/gamification/my-challenges': 'My Challenges',
   '/gamification/badges': 'Badges',
-  '/gamification/rewards': 'Rewards',
+  '/gamification/rewards': 'Reward Store',
+  '/gamification/rewards/history': 'Redemption History',
+  '/gamification/leaderboard': 'Leaderboard Rankings',
   '/core/reports': 'Reports',
   '/core/settings': 'Settings',
 };

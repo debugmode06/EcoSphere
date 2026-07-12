@@ -17,9 +17,9 @@ export default {
           900: '#14532d',
         },
         surface: {
-          DEFAULT: '#0f172a',
-          card: '#1e293b',
-          elevated: '#334155',
+          DEFAULT: '#f8fafc',
+          card: '#ffffff',
+          elevated: '#f1f5f9',
         },
       },
       fontFamily: {

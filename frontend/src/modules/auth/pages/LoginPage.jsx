@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { useAuth } from '../../../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 import { ShieldCheck, Mail, Lock, AlertCircle, ArrowRight, User } from 'lucide-react';
 
 export default function LoginPage() {
   const { login } = useAuth();
+  const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -21,7 +23,8 @@ export default function LoginPage() {
 
     try {
       await login(email, password);
-      // AuthContext will update state and AppRouter will redirect to /dashboard
+      // AppRouter redirects to /dashboard by default based on role, or we can force navigate:
+      // navigate('/gamification/challenges'); 
     } catch (err) {
       setError(err.response?.data?.message || 'Invalid email or password. Please try again.');
     } finally {
@@ -120,6 +123,7 @@ export default function LoginPage() {
             ].map((cred) => (
               <button
                 key={cred.role}
+                type="button"
                 onClick={() => handleQuickFill(cred.email, cred.pw)}
                 className="w-full flex items-center justify-between p-2.5 rounded-xl border border-slate-800/80 bg-slate-900/30 hover:bg-slate-900/60 hover:border-slate-700/50 text-left transition-all duration-150 group"
               >
@@ -137,7 +141,6 @@ export default function LoginPage() {
             ))}
           </div>
         </div>
-
       </div>
     </div>
   );

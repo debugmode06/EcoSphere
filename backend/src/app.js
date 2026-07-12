@@ -3,6 +3,25 @@ const cors = require('cors');
 const morgan = require('morgan');
 const errorHandler = require('./middleware/errorHandler');
 
+// Mongoose model registration
+require('./modules/auth/models/Employee.model');
+require('./modules/core/models/Department.model');
+require('./modules/core/models/Category.model');
+require('./modules/core/models/DepartmentScore.model');
+require('./modules/environmental/models/EmissionFactor.model');
+require('./modules/environmental/models/CarbonTransaction.model');
+require('./modules/environmental/models/EnvironmentalGoal.model');
+require('./modules/social/models/CsrActivity.model');
+require('./modules/social/models/EmployeeParticipation.model');
+require('./modules/governance/models/EsgPolicy.model');
+require('./modules/governance/models/PolicyAcknowledgement.model');
+require('./modules/governance/models/Audit.model');
+require('./modules/governance/models/ComplianceIssue.model');
+require('./modules/gamification/models/Challenge.model');
+require('./modules/gamification/models/ChallengeParticipation.model');
+require('./modules/gamification/models/Badge.model');
+require('./modules/gamification/models/Reward.model');
+
 // Route imports
 const authRoutes = require('./modules/auth/auth.routes');
 const environmentalRoutes = require('./modules/environmental/environmental.routes');
