@@ -16,7 +16,7 @@ const register = asyncHandler(async (req, res) => {
 
 const login = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
-  const result = await authService.login(email, password);
+  const result = await authService.login({ email, password });
   res.status(200).json({
     message: 'Logged in successfully',
     token: result.token,
