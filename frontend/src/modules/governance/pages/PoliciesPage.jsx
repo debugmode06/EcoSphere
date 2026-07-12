@@ -47,8 +47,8 @@ function AcknowledgeModal({ open, onClose, onAcknowledge, policyTitle }) {
   return (
     <Modal open={open} onClose={onClose} title={`Acknowledge Policy`}>
       <form onSubmit={handleSubmit} className="space-y-4">
-        <p className="text-sm text-slate-300">
-          You are acknowledging: <span className="font-semibold text-slate-100">{policyTitle}</span>
+        <p className="text-sm text-slate-600">
+          You are acknowledging: <span className="font-semibold text-slate-800">{policyTitle}</span>
         </p>
         <div>
           <label className="label" htmlFor="ack-feedback">Feedback (Optional)</label>
@@ -111,15 +111,15 @@ function AdminDashboardModal({ open, onClose, policyId }) {
       ) : statsData ? (
         <div className="space-y-4">
           {/* Tabs */}
-          <div className="flex gap-2 border-b border-slate-700 pb-2 mb-4 overflow-x-auto">
+          <div className="flex gap-2 border-b border-slate-200 pb-2 mb-4 overflow-x-auto">
             {['overview', 'departments', 'pending', 'feedback'].map(tab => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
                 className={`px-3 py-1.5 text-xs font-medium rounded-t-lg transition-colors capitalize ${
                   activeTab === tab
-                    ? 'bg-slate-700/50 text-brand-400 border-b-2 border-brand-500'
-                    : 'text-slate-400 hover:text-slate-200'
+                    ? 'bg-slate-100 text-brand-600 border-b-2 border-brand-500 font-bold'
+                    : 'text-slate-500 hover:text-slate-800'
                 }`}
               >
                 {tab}
@@ -130,21 +130,21 @@ function AdminDashboardModal({ open, onClose, policyId }) {
           {activeTab === 'overview' && (
             <div className="space-y-4 animate-in fade-in duration-200">
               <div className="grid grid-cols-2 gap-3">
-                <div className="bg-slate-800 p-3 rounded-xl border border-slate-700">
-                  <p className="text-[10px] text-slate-400 mb-1 uppercase">Total Assigned</p>
-                  <p className="text-xl font-bold text-slate-100">{statsData.stats.managers.total + statsData.stats.employees.total}</p>
+                <div className="bg-slate-50 p-3 rounded-xl border border-slate-200">
+                  <p className="text-[10px] text-slate-500 mb-1 uppercase">Total Assigned</p>
+                  <p className="text-xl font-bold text-slate-800">{statsData.stats.managers.total + statsData.stats.employees.total}</p>
                 </div>
-                <div className="bg-slate-800 p-3 rounded-xl border border-slate-700">
-                  <p className="text-[10px] text-slate-400 mb-1 uppercase">Acknowledged</p>
-                  <p className="text-xl font-bold text-green-400">{statsData.stats.managers.acknowledged + statsData.stats.employees.acknowledged}</p>
+                <div className="bg-slate-50 p-3 rounded-xl border border-slate-200">
+                  <p className="text-[10px] text-slate-500 mb-1 uppercase">Acknowledged</p>
+                  <p className="text-xl font-bold text-green-600">{statsData.stats.managers.acknowledged + statsData.stats.employees.acknowledged}</p>
                 </div>
-                <div className="bg-slate-800 p-3 rounded-xl border border-slate-700">
-                  <p className="text-[10px] text-slate-400 mb-1 uppercase">Pending</p>
-                  <p className="text-xl font-bold text-yellow-400">{statsData.stats.pending}</p>
+                <div className="bg-slate-50 p-3 rounded-xl border border-slate-200">
+                  <p className="text-[10px] text-slate-500 mb-1 uppercase">Pending</p>
+                  <p className="text-xl font-bold text-amber-600">{statsData.stats.pending}</p>
                 </div>
-                <div className="bg-slate-800 p-3 rounded-xl border border-slate-700">
-                  <p className="text-[10px] text-slate-400 mb-1 uppercase">Feedback Count</p>
-                  <p className="text-xl font-bold text-brand-400">{statsData.stats.feedbackCount}</p>
+                <div className="bg-slate-50 p-3 rounded-xl border border-slate-200">
+                  <p className="text-[10px] text-slate-500 mb-1 uppercase">Feedback Count</p>
+                  <p className="text-xl font-bold text-brand-600">{statsData.stats.feedbackCount}</p>
                 </div>
               </div>
             </div>
@@ -153,12 +153,12 @@ function AdminDashboardModal({ open, onClose, policyId }) {
           {activeTab === 'departments' && (
             <div className="space-y-3 animate-in fade-in duration-200 max-h-60 overflow-y-auto pr-2">
               {statsData.departmentProgress.map((dept, i) => (
-                <div key={i} className="bg-slate-800 p-3 rounded-lg border border-slate-700">
+                <div key={i} className="bg-slate-50 p-3 rounded-lg border border-slate-200">
                   <div className="flex justify-between items-end mb-2">
-                    <span className="text-sm font-medium text-slate-200">{dept.name} ({dept.code})</span>
-                    <span className="text-xs text-slate-400">{dept.acknowledged} / {dept.total}</span>
+                    <span className="text-sm font-medium text-slate-800">{dept.name} ({dept.code})</span>
+                    <span className="text-xs text-slate-500">{dept.acknowledged} / {dept.total}</span>
                   </div>
-                  <div className="w-full bg-slate-700 h-2 rounded-full overflow-hidden">
+                  <div className="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
                     <div 
                       className="bg-brand-500 h-full rounded-full transition-all duration-500" 
                       style={{ width: `${dept.progress}%` }}
@@ -173,8 +173,8 @@ function AdminDashboardModal({ open, onClose, policyId }) {
             <div className="space-y-3 animate-in fade-in duration-200">
               {statsData.stats.pending > 0 ? (
                 <>
-                  <div className="bg-red-900/20 border border-red-500/30 p-3 rounded-xl flex items-center justify-between mb-3">
-                    <div className="flex items-center gap-2 text-red-400">
+                  <div className="bg-red-50 border border-red-200 p-3 rounded-xl flex items-center justify-between mb-3">
+                    <div className="flex items-center gap-2 text-red-700">
                       <AlertTriangle className="w-4 h-4" />
                       <span className="text-xs font-semibold">{statsData.stats.pending} Users Pending</span>
                     </div>
@@ -189,15 +189,15 @@ function AdminDashboardModal({ open, onClose, policyId }) {
                   </div>
                   <ul className="max-h-48 overflow-y-auto space-y-1">
                     {statsData.stats.pendingUsers?.map((u, i) => (
-                      <li key={i} className="flex justify-between items-center text-xs p-2 bg-slate-800 rounded-lg">
-                        <span className="text-slate-300 font-medium">{u.name}</span>
+                      <li key={i} className="flex justify-between items-center text-xs p-2 bg-slate-50 rounded-lg border border-slate-100">
+                        <span className="text-slate-700 font-medium">{u.name}</span>
                         <span className="text-slate-500">{u.department}</span>
                       </li>
                     ))}
                   </ul>
                 </>
               ) : (
-                <p className="text-green-400 text-sm text-center py-4">Everyone has acknowledged!</p>
+                <p className="text-green-600 text-sm text-center py-4">Everyone has acknowledged!</p>
               )}
             </div>
           )}
@@ -206,12 +206,12 @@ function AdminDashboardModal({ open, onClose, policyId }) {
             <div className="space-y-3 animate-in fade-in duration-200 max-h-60 overflow-y-auto pr-2">
               {statsData.stats.feedbacks.length > 0 ? (
                 statsData.stats.feedbacks.map((f, i) => (
-                  <div key={i} className="bg-slate-800 p-3 rounded-lg border border-slate-700">
+                  <div key={i} className="bg-slate-50 p-3 rounded-lg border border-slate-200">
                     <div className="flex justify-between items-center mb-1.5">
-                      <span className="text-xs font-semibold text-brand-300">{f.employeeName}</span>
+                      <span className="text-xs font-semibold text-brand-600">{f.employeeName}</span>
                       <span className="text-[10px] text-slate-500">{new Date(f.acknowledgedDate).toLocaleDateString()}</span>
                     </div>
-                    <p className="text-sm text-slate-300 italic">"{f.feedback}"</p>
+                    <p className="text-sm text-slate-700 italic">"{f.feedback}"</p>
                   </div>
                 ))
               ) : (
@@ -220,10 +220,10 @@ function AdminDashboardModal({ open, onClose, policyId }) {
             </div>
           )}
 
-          {message && <p className="text-sm text-center text-slate-300 mt-2">{message}</p>}
+          {message && <p className="text-sm text-center text-slate-600 mt-2">{message}</p>}
         </div>
       ) : (
-        <p className="text-red-400 text-sm">{message}</p>
+        <p className="text-red-600 text-sm">{message}</p>
       )}
     </Modal>
   );
@@ -246,19 +246,19 @@ function PolicyCard({ policy, onAcknowledge, onStatusChange, onEdit, onNewVersio
 
   return (
     <>
-      <div className="card p-5 flex flex-col gap-4 hover:border-brand-500/40 transition-all duration-200 group relative">
+      <div className="card p-5 flex flex-col gap-4 hover:border-brand-500/40 transition-all duration-200 group relative bg-white border border-slate-200">
         {/* Header */}
         <div className="flex items-start justify-between gap-3">
           <div className="flex items-center gap-3 min-w-0">
-            <div className="stat-icon bg-brand-500/10 flex-shrink-0">
-              <ShieldCheck className="w-5 h-5 text-brand-400" />
+            <div className="stat-icon bg-brand-50 flex-shrink-0 flex items-center justify-center p-2 rounded-xl">
+              <ShieldCheck className="w-5 h-5 text-brand-500" />
             </div>
             <div className="min-w-0">
-              <h3 className="text-slate-100 font-semibold text-sm leading-tight truncate">{policy.title}</h3>
+              <h3 className="text-slate-800 font-bold text-sm leading-tight truncate">{policy.title}</h3>
               <div className="flex items-center gap-2 mt-1">
                 <span className="text-slate-500 text-xs">v{policy.version}</span>
                 {policy.esgCategory && (
-                  <span className="bg-slate-700/50 text-slate-300 px-1.5 py-0.5 rounded text-[10px] uppercase font-bold">
+                  <span className="bg-slate-100 text-slate-600 px-1.5 py-0.5 rounded text-[10px] uppercase font-bold">
                     {policy.esgCategory}
                   </span>
                 )}
@@ -273,7 +273,7 @@ function PolicyCard({ policy, onAcknowledge, onStatusChange, onEdit, onNewVersio
 
         {/* Description */}
         {policy.description && (
-          <p className="text-slate-400 text-sm leading-relaxed line-clamp-3">{policy.description}</p>
+          <p className="text-slate-600 text-sm leading-relaxed line-clamp-3">{policy.description}</p>
         )}
 
         {/* Dates & Links */}
@@ -285,14 +285,14 @@ function PolicyCard({ policy, onAcknowledge, onStatusChange, onEdit, onNewVersio
             </div>
           )}
           {policy.pdfUrl && (
-            <a href={policy.pdfUrl} target="_blank" rel="noreferrer" className="flex items-center gap-1.5 text-brand-400 hover:text-brand-300 transition-colors w-fit">
+            <a href={policy.pdfUrl} target="_blank" rel="noreferrer" className="flex items-center gap-1.5 text-brand-600 hover:text-brand-700 transition-colors w-fit font-medium">
               <FileDown className="w-3.5 h-3.5" /> View Policy Document
             </a>
           )}
         </div>
 
         {/* Actions row */}
-        <div className="flex items-center gap-2 flex-wrap mt-auto pt-3 border-t border-slate-700/50">
+        <div className="flex items-center gap-2 flex-wrap mt-auto pt-3 border-t border-slate-100">
           {/* Acknowledge button (MANAGER, EMPLOYEE) */}
           {policy.status === 'Published' && userRole !== 'ADMIN' && (
             <button
@@ -309,7 +309,7 @@ function PolicyCard({ policy, onAcknowledge, onStatusChange, onEdit, onNewVersio
           {(userRole === 'ADMIN' || userRole === 'MANAGER') && policy.status === 'Published' && (
             <button
               onClick={() => setShowStatsModal(true)}
-              className="flex items-center gap-1.5 text-xs bg-brand-900/30 text-brand-300 hover:bg-brand-900/50 border border-brand-700/50 py-1.5 px-3 rounded-lg transition-colors"
+              className="flex items-center gap-1.5 text-xs bg-brand-50 text-brand-700 hover:bg-brand-100 border border-brand-200 py-1.5 px-3 rounded-lg transition-colors font-medium"
             >
               <BarChart2 className="w-3.5 h-3.5" />
               Dashboard
@@ -424,8 +424,8 @@ function PolicyFormModal({ open, onClose, onSave, initialData }) {
     <Modal open={open} onClose={onClose} title={initialData ? 'Edit Policy' : 'Create New Policy'}>
       <form onSubmit={handleSubmit} className="space-y-4">
         {error && (
-          <div className="flex items-center gap-2 bg-red-900/30 border border-red-700/50 text-red-300 text-sm px-3 py-2 rounded-lg">
-            <AlertCircle className="w-4 h-4 flex-shrink-0" />
+          <div className="flex items-start gap-2 bg-red-50 border border-red-200 text-red-700 text-sm px-3 py-2 rounded-lg">
+            <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
             {error}
           </div>
         )}
@@ -637,7 +637,7 @@ export default function PoliciesPage() {
       <div className="flex items-start justify-between mb-6 flex-wrap gap-3">
         <div>
           <h1 className="page-header flex items-center gap-2">
-            <ShieldCheck className="w-6 h-6 text-brand-400" />
+            <ShieldCheck className="w-6 h-6 text-brand-500" />
             ESG Policies
           </h1>
           <p className="page-subheader">
@@ -676,15 +676,15 @@ export default function PoliciesPage() {
         // Only render tabs if there's more than just "All" and "Published" that make sense,
         // or just render them anyway since it's good UX
         return (
-          <div className="flex gap-1 mb-6 bg-slate-800/50 rounded-xl p-1 w-fit border border-slate-700/50">
+          <div className="flex gap-1 mb-6 bg-slate-100 rounded-xl p-1 w-fit border border-slate-200 shadow-sm">
             {availableTabs.map((f) => (
               <button
                 key={f}
                 onClick={() => setFilter(f)}
                 className={`px-4 py-1.5 rounded-lg text-sm font-medium transition-all duration-150 ${
                   filter === f
-                    ? 'bg-brand-600/30 text-brand-300 border border-brand-500/30'
-                    : 'text-slate-400 hover:text-slate-200'
+                    ? 'bg-white text-brand-600 border border-slate-200 shadow-sm font-semibold'
+                    : 'text-slate-500 hover:text-slate-800'
                 }`}
               >
                 {f === 'Archived' && role === 'MANAGER' ? 'Previous Versions' : f}
@@ -706,15 +706,15 @@ export default function PoliciesPage() {
       {loading ? (
         <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
           {[1, 2, 3].map((i) => (
-            <div key={i} className="card p-6 animate-pulse space-y-3">
-              <div className="h-4 bg-slate-700 rounded w-3/4" />
-              <div className="h-3 bg-slate-700/60 rounded w-full" />
-              <div className="h-3 bg-slate-700/60 rounded w-2/3" />
+            <div key={i} className="card p-6 animate-pulse space-y-3 bg-white border border-slate-200">
+              <div className="h-4 bg-slate-200 rounded w-3/4 animate-pulse" />
+              <div className="h-3 bg-slate-200/60 rounded w-full animate-pulse" />
+              <div className="h-3 bg-slate-200/60 rounded w-2/3 animate-pulse" />
             </div>
           ))}
         </div>
       ) : filteredPolicies.length === 0 ? (
-        <div className="card p-12 text-center">
+        <div className="card p-12 text-center bg-white border border-slate-200">
           <FileText className="w-12 h-12 text-slate-600 mx-auto mb-3" />
           <p className="text-slate-400 font-medium">No policies found</p>
           <p className="text-slate-500 text-sm mt-1">

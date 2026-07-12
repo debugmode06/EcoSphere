@@ -69,7 +69,7 @@ function CreateAuditModal({ open, onClose, onCreated }) {
     <Modal open={open} onClose={onClose} title="Schedule New Audit">
       <form onSubmit={handleSubmit} className="space-y-4">
         {error && (
-          <div className="flex items-center gap-2 bg-red-900/30 border border-red-700/50 text-red-300 text-sm px-3 py-2 rounded-lg">
+          <div className="flex items-center gap-2 bg-red-50 border border-red-200 text-red-700 text-sm px-3 py-2 rounded-lg">
             <AlertCircle className="w-4 h-4 flex-shrink-0" />
             {error}
           </div>
@@ -183,7 +183,7 @@ function UpdateAuditModal({ open, onClose, audit, onUpdated }) {
     <Modal open={open} onClose={onClose} title={`Update: ${audit.title}`}>
       <form onSubmit={handleSubmit} className="space-y-4">
         {error && (
-          <div className="flex items-center gap-2 bg-red-900/30 border border-red-700/50 text-red-300 text-sm px-3 py-2 rounded-lg">
+          <div className="flex items-center gap-2 bg-red-50 border border-red-200 text-red-700 text-sm px-3 py-2 rounded-lg">
             <AlertCircle className="w-4 h-4 flex-shrink-0" />
             {error}
           </div>
@@ -241,53 +241,53 @@ function ReportModal({ open, onClose, audits, userRole, userDeptName }) {
   return (
     <Modal open={open} onClose={onClose} title="Compliance Audit Report">
       <div className="space-y-6">
-        <div className="border-b border-slate-700 pb-4">
-          <h2 className="text-xl font-bold text-slate-100">EcoSphere Governance Module</h2>
-          <p className="text-sm text-slate-400">
-            Report Type: <span className="font-semibold text-slate-200">{userRole === 'ADMIN' ? 'Global Audit Report' : `Department Audit Report (${userDeptName || 'My Department'})`}</span>
+        <div className="border-b border-slate-200 pb-4">
+          <h2 className="text-xl font-bold text-slate-800">EcoSphere Governance Module</h2>
+          <p className="text-sm text-slate-500">
+            Report Type: <span className="font-semibold text-slate-700">{userRole === 'ADMIN' ? 'Global Audit Report' : `Department Audit Report (${userDeptName || 'My Department'})`}</span>
           </p>
-          <p className="text-xs text-slate-500">Generated on: {new Date().toLocaleString('en-IN')}</p>
+          <p className="text-xs text-slate-400">Generated on: {new Date().toLocaleString('en-IN')}</p>
         </div>
 
         <div className="grid grid-cols-4 gap-4 text-center">
-          <div className="bg-slate-800/50 p-3 rounded-xl border border-slate-700">
-            <p className="text-xs text-slate-400 uppercase">Total</p>
-            <p className="text-xl font-bold text-slate-200">{audits.length}</p>
+          <div className="bg-slate-50 p-3 rounded-xl border border-slate-200">
+            <p className="text-xs text-slate-500 uppercase">Total</p>
+            <p className="text-xl font-bold text-slate-800">{audits.length}</p>
           </div>
-          <div className="bg-slate-800/50 p-3 rounded-xl border border-slate-700">
-            <p className="text-xs text-slate-400 uppercase">Completed</p>
-            <p className="text-xl font-bold text-green-400">{completed}</p>
+          <div className="bg-slate-50 p-3 rounded-xl border border-slate-200">
+            <p className="text-xs text-slate-500 uppercase">Completed</p>
+            <p className="text-xl font-bold text-green-600">{completed}</p>
           </div>
-          <div className="bg-slate-800/50 p-3 rounded-xl border border-slate-700">
-            <p className="text-xs text-slate-400 uppercase">Active</p>
-            <p className="text-xl font-bold text-blue-400">{inProgress + scheduled}</p>
+          <div className="bg-slate-50 p-3 rounded-xl border border-slate-200">
+            <p className="text-xs text-slate-500 uppercase">Active</p>
+            <p className="text-xl font-bold text-blue-600">{inProgress + scheduled}</p>
           </div>
-          <div className="bg-slate-800/50 p-3 rounded-xl border border-slate-700">
-            <p className="text-xs text-slate-400 uppercase">Cancelled</p>
-            <p className="text-xl font-bold text-red-400">{cancelled}</p>
+          <div className="bg-slate-50 p-3 rounded-xl border border-slate-200">
+            <p className="text-xs text-slate-500 uppercase">Cancelled</p>
+            <p className="text-xl font-bold text-red-600">{cancelled}</p>
           </div>
         </div>
 
         <div className="space-y-4 max-h-[300px] overflow-y-auto pr-2">
-          <h3 className="font-semibold text-slate-200 border-b border-slate-800 pb-2">Audit List Details</h3>
+          <h3 className="font-semibold text-slate-800 border-b border-slate-200 pb-2">Audit List Details</h3>
           {audits.length === 0 ? (
             <p className="text-sm text-slate-500 italic">No audits to display in this scope.</p>
           ) : (
             audits.map((a, i) => (
-              <div key={i} className="bg-slate-800/30 p-3 rounded-lg border border-slate-700 space-y-2">
+              <div key={i} className="bg-slate-50 p-3 rounded-lg border border-slate-200 space-y-2">
                 <div className="flex justify-between items-start">
                   <div>
-                    <h4 className="font-medium text-slate-200">{a.title}</h4>
+                    <h4 className="font-semibold text-slate-800">{a.title}</h4>
                     <p className="text-xs text-slate-500">
                       Dept: {a.department?.name || 'All'} | Date: {new Date(a.date).toLocaleDateString('en-IN')}
                     </p>
                   </div>
-                  <span className="text-xs font-semibold px-2 py-0.5 rounded bg-slate-700 text-slate-300">
+                  <span className="text-xs font-semibold px-2 py-0.5 rounded bg-slate-100 text-slate-600 border border-slate-200">
                     {a.status}
                   </span>
                 </div>
                 {a.findings && (
-                  <div className="text-xs text-slate-400 border-t border-slate-700/50 pt-2">
+                  <div className="text-xs text-slate-600 border-t border-slate-200 pt-2">
                     <strong>Findings:</strong> {a.findings}
                   </div>
                 )}
@@ -315,24 +315,24 @@ function AuditRow({ audit, canEdit, onEdit }) {
 
   return (
     <>
-      <tr className="cursor-pointer" onClick={() => setExpanded((v) => !v)}>
+      <tr className="cursor-pointer hover:bg-slate-50/50" onClick={() => setExpanded((v) => !v)}>
         <td>
           <div className="flex items-center gap-2">
             <ChevronDown
-              className={`w-4 h-4 text-slate-500 transition-transform flex-shrink-0 ${expanded ? '' : '-rotate-90'}`}
+              className={`w-4 h-4 text-slate-400 transition-transform flex-shrink-0 ${expanded ? '' : '-rotate-90'}`}
             />
-            <span className="font-medium text-slate-200 text-sm">{audit.title}</span>
+            <span className="font-semibold text-slate-800 text-sm">{audit.title}</span>
           </div>
         </td>
         <td>
-          <div className="flex items-center gap-1.5 text-slate-400 text-sm">
-            <Building2 className="w-3.5 h-3.5" />
-            {audit.department?.name || <span className="text-slate-600 italic">All Depts</span>}
+          <div className="flex items-center gap-1.5 text-slate-500 text-sm">
+            <Building2 className="w-3.5 h-3.5 text-slate-400" />
+            {audit.department?.name || <span className="text-slate-500 italic">All Depts</span>}
           </div>
         </td>
         <td>
-          <div className="flex items-center gap-1.5 text-slate-400 text-sm">
-            <Calendar className="w-3.5 h-3.5" />
+          <div className="flex items-center gap-1.5 text-slate-500 text-sm">
+            <Calendar className="w-3.5 h-3.5 text-slate-400" />
             {new Date(audit.date).toLocaleDateString('en-IN', {
               day: 'numeric', month: 'short', year: 'numeric'
             })}
@@ -360,7 +360,7 @@ function AuditRow({ audit, canEdit, onEdit }) {
       {expanded && audit.findings && (
         <tr>
           <td colSpan={5} className="px-4 pb-3 pt-0">
-            <div className="ml-6 bg-slate-800/60 rounded-xl p-3 border border-slate-700/40 text-sm text-slate-400 leading-relaxed">
+            <div className="ml-6 bg-slate-50 rounded-xl p-3 border border-slate-200 text-sm text-slate-600 leading-relaxed shadow-sm">
               <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-1">Findings</p>
               {audit.findings}
             </div>
@@ -414,9 +414,9 @@ export default function AuditsPage() {
   if (role === 'EMPLOYEE') {
     return (
       <div className="p-6 max-w-6xl mx-auto text-center">
-        <div className="card p-12">
+        <div className="card p-12 bg-white border border-slate-200">
           <AlertCircle className="w-12 h-12 text-red-500 mx-auto mb-3" />
-          <p className="text-slate-400 font-medium">Access Denied</p>
+          <p className="text-slate-700 font-semibold">Access Denied</p>
           <p className="text-slate-500 text-sm mt-1">You do not have permission to view compliance audits.</p>
         </div>
       </div>
@@ -448,7 +448,7 @@ export default function AuditsPage() {
       <div className="flex items-start justify-between mb-6 flex-wrap gap-3">
         <div>
           <h1 className="page-header flex items-center gap-2">
-            <FileSearch className="w-6 h-6 text-blue-400" />
+            <FileSearch className="w-6 h-6 text-blue-500" />
             Compliance Audits
           </h1>
           <p className="page-subheader">
@@ -470,7 +470,7 @@ export default function AuditsPage() {
             <button
               id="generate-report-btn"
               onClick={() => setShowReport(true)}
-              className="btn-secondary flex items-center gap-2 text-sm text-brand-300 border-brand-700/50 hover:bg-brand-900/30"
+              className="btn-secondary flex items-center gap-2 text-sm text-brand-600 border-slate-200 hover:bg-slate-100 font-medium"
             >
               <FileText className="w-4 h-4" />
               Generate Report
@@ -493,12 +493,12 @@ export default function AuditsPage() {
       {/* Summary KPI strip */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
         {[
-          { label: 'Total Audits', val: counts.All, color: 'text-slate-300' },
-          { label: 'Scheduled', val: counts.Scheduled, color: 'text-yellow-400' },
-          { label: 'In Progress', val: counts['In Progress'], color: 'text-blue-400' },
-          { label: 'Completed', val: counts.Completed, color: 'text-brand-400' },
+          { label: 'Total Audits', val: counts.All, color: 'text-slate-800' },
+          { label: 'Scheduled', val: counts.Scheduled, color: 'text-yellow-600' },
+          { label: 'In Progress', val: counts['In Progress'], color: 'text-blue-600' },
+          { label: 'Completed', val: counts.Completed, color: 'text-brand-600' },
         ].map((k) => (
-          <div key={k.label} className="card px-4 py-3 text-center">
+          <div key={k.label} className="card px-4 py-3 text-center bg-white border border-slate-200">
             <p className={`text-2xl font-bold ${k.color}`}>{k.val}</p>
             <p className="text-slate-500 text-xs mt-0.5">{k.label}</p>
           </div>
@@ -507,24 +507,24 @@ export default function AuditsPage() {
 
       {/* Filter + Search */}
       <div className="flex flex-col sm:flex-row gap-3 mb-4">
-        <div className="flex gap-1 bg-slate-800/50 rounded-xl p-1 border border-slate-700/50 flex-wrap">
+        <div className="flex gap-1 bg-slate-100 rounded-xl p-1 border border-slate-200 flex-wrap shadow-sm">
           {['All', 'Scheduled', 'In Progress', 'Completed', 'Cancelled'].map((f) => (
             <button
               key={f}
               id={`audit-filter-${f.toLowerCase().replace(' ', '-')}`}
               onClick={() => setStatusFilter(f)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-150 ${
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all duration-150 ${
                 statusFilter === f
-                  ? 'bg-blue-600/30 text-blue-300 border border-blue-500/30'
-                  : 'text-slate-400 hover:text-slate-200'
+                  ? 'bg-white text-blue-600 border border-slate-200 shadow-sm'
+                  : 'text-slate-500 hover:text-slate-800'
               }`}
             >
-              {f} <span className="opacity-60">({counts[f] ?? 0})</span>
+              {f} <span className="opacity-60 font-normal">({counts[f] ?? 0})</span>
             </button>
           ))}
         </div>
         <div className="relative flex-1 max-w-xs ml-auto">
-          <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
+          <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
           <input
             id="audit-search"
             className="input pl-9 text-sm"
@@ -537,13 +537,13 @@ export default function AuditsPage() {
 
       {/* Error */}
       {error && (
-        <div className="card p-4 border-red-700/50 text-red-300 text-sm mb-4 flex items-center gap-2">
+        <div className="card p-4 border-red-200 bg-red-50 text-red-700 text-sm mb-4 flex items-center gap-2">
           <AlertCircle className="w-4 h-4" /> {error}
         </div>
       )}
 
       {/* Table */}
-      <div className="table-wrapper">
+      <div className="table-wrapper border border-slate-200 bg-white shadow-sm">
         <table>
           <thead>
             <tr>
@@ -560,7 +560,7 @@ export default function AuditsPage() {
                 <tr key={i}>
                   {Array.from({ length: 5 }).map((__, j) => (
                     <td key={j}>
-                      <div className="h-4 bg-slate-700/50 rounded animate-pulse" />
+                      <div className="h-4 bg-slate-200 rounded animate-pulse" />
                     </td>
                   ))}
                 </tr>
@@ -568,7 +568,7 @@ export default function AuditsPage() {
             ) : filtered.length === 0 ? (
               <tr>
                 <td colSpan={5} className="py-16 text-center">
-                  <FileSearch className="w-10 h-10 text-slate-600 mx-auto mb-2" />
+                  <FileSearch className="w-10 h-10 text-slate-400 mx-auto mb-2" />
                   <p className="text-slate-500">No audits found</p>
                 </td>
               </tr>

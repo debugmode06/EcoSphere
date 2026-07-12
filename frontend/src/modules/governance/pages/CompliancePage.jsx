@@ -84,7 +84,7 @@ function CreateIssueModal({ open, onClose, onCreated }) {
     <Modal open={open} onClose={onClose} title="Log Compliance Issue">
       <form onSubmit={handleSubmit} className="space-y-4">
         {error && (
-          <div className="flex items-start gap-2 bg-red-900/30 border border-red-700/50 text-red-300 text-sm px-3 py-2 rounded-lg">
+          <div className="flex items-start gap-2 bg-red-50 border border-red-200 text-red-700 text-sm px-3 py-2 rounded-lg">
             <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5" />
             {error}
           </div>
@@ -193,9 +193,9 @@ function ResolveModal({ open, onClose, issue, onResolved }) {
   return (
     <Modal open={open} onClose={onClose} title="Resolve Compliance Issue">
       <div className="space-y-4">
-        <div className="bg-slate-800/60 rounded-xl p-3 border border-slate-700/40">
+        <div className="bg-slate-50 rounded-xl p-3 border border-slate-200 shadow-sm">
           <p className="text-xs text-slate-500 uppercase tracking-wider font-semibold mb-1">Issue</p>
-          <p className="text-slate-300 text-sm">{issue.description}</p>
+          <p className="text-slate-800 text-sm">{issue.description}</p>
           <div className="flex items-center gap-2 mt-2">
             <SeverityBadge severity={issue.severity} />
             <span className="text-slate-500 text-xs">Owner: {issue.owner}</span>
@@ -203,7 +203,7 @@ function ResolveModal({ open, onClose, issue, onResolved }) {
         </div>
 
         {error && (
-          <div className="flex items-center gap-2 bg-red-900/30 border border-red-700/50 text-red-300 text-sm px-3 py-2 rounded-lg">
+          <div className="flex items-center gap-2 bg-red-50 border border-red-200 text-red-700 text-sm px-3 py-2 rounded-lg">
             <AlertCircle className="w-4 h-4 flex-shrink-0" />
             {error}
           </div>
@@ -275,13 +275,13 @@ function ReviewModal({ open, onClose, issue, onReviewed }) {
   return (
     <Modal open={open} onClose={onClose} title="Review Compliance Resolution">
       <div className="space-y-4">
-        <div className="bg-slate-800/60 rounded-xl p-3 border border-slate-700/40 text-sm space-y-2">
-          <p><strong className="text-slate-300">Issue:</strong> {issue.description}</p>
-          <p><strong className="text-slate-300">Resolution Notes:</strong> {issue.resolutionNotes || 'None'}</p>
+        <div className="bg-slate-50 rounded-xl p-3 border border-slate-200 text-sm space-y-2 shadow-sm">
+          <p><strong className="text-slate-700">Issue:</strong> {issue.description}</p>
+          <p><strong className="text-slate-700">Resolution Notes:</strong> {issue.resolutionNotes || 'None'}</p>
           {issue.resolutionProofUrl && (
             <p>
-              <strong className="text-slate-300">Proof URL:</strong>{' '}
-              <a href={issue.resolutionProofUrl} target="_blank" rel="noreferrer" className="text-brand-400 hover:underline">
+              <strong className="text-slate-700">Proof URL:</strong>{' '}
+              <a href={issue.resolutionProofUrl} target="_blank" rel="noreferrer" className="text-brand-600 hover:underline font-medium">
                 {issue.resolutionProofUrl}
               </a>
             </p>
@@ -289,7 +289,7 @@ function ReviewModal({ open, onClose, issue, onReviewed }) {
         </div>
 
         {error && (
-          <div className="flex items-center gap-2 bg-red-900/30 border border-red-700/50 text-red-300 text-sm px-3 py-2 rounded-lg">
+          <div className="flex items-center gap-2 bg-red-50 border border-red-200 text-red-700 text-sm px-3 py-2 rounded-lg">
             <AlertCircle className="w-4 h-4 flex-shrink-0" />
             {error}
           </div>
@@ -318,7 +318,7 @@ function ReviewModal({ open, onClose, issue, onReviewed }) {
           <button
             onClick={() => handleReview('OPEN')}
             disabled={saving}
-            className="bg-red-700 hover:bg-red-600 text-white rounded-lg flex-1 flex items-center justify-center gap-1.5 text-xs font-semibold"
+            className="bg-red-600 hover:bg-red-500 text-white rounded-xl flex-1 flex items-center justify-center gap-1.5 text-xs font-semibold"
           >
             <XCircle className="w-4 h-4" /> Reject & Re-open
           </button>
@@ -334,12 +334,12 @@ function IssueRow({ issue, userRole, onResolve, onReview }) {
   const canReview = userRole === 'ADMIN' && issue.status === 'PENDING_REVIEW';
 
   return (
-    <tr>
+    <tr className="hover:bg-slate-50/50">
       <td className="max-w-xs">
         <div className="space-y-1">
-          <p className="text-slate-200 text-sm leading-snug">{issue.description}</p>
+          <p className="text-slate-800 text-sm leading-snug">{issue.description}</p>
           {issue.audit && (
-            <p className="text-slate-500 text-xs">
+            <p className="text-slate-500 text-xs font-medium">
               Audit: {issue.audit?.title || 'N/A'}
             </p>
           )}
@@ -349,11 +349,11 @@ function IssueRow({ issue, userRole, onResolve, onReview }) {
         <SeverityBadge severity={issue.severity} />
       </td>
       <td>
-        <span className="text-slate-300 text-sm">{issue.owner}</span>
+        <span className="text-slate-700 text-sm font-medium">{issue.owner}</span>
       </td>
       <td>
         <div className="space-y-1">
-          <p className="text-slate-400 text-sm">
+          <p className="text-slate-600 text-sm font-medium">
             {new Date(issue.dueDate).toLocaleDateString('en-IN', {
               day: 'numeric', month: 'short', year: 'numeric'
             })}
@@ -388,7 +388,7 @@ function IssueRow({ issue, userRole, onResolve, onReview }) {
             onClick={() => onResolve(issue)}
             className="btn-secondary text-xs py-1 px-3 flex items-center gap-1"
           >
-            <CheckCircle2 className="w-3.5 h-3.5 text-brand-400" />
+            <CheckCircle2 className="w-3.5 h-3.5 text-brand-600" />
             Resolve
           </button>
         )}
@@ -453,9 +453,9 @@ export default function CompliancePage() {
   if (role === 'EMPLOYEE') {
     return (
       <div className="p-6 max-w-6xl mx-auto text-center">
-        <div className="card p-12">
+        <div className="card p-12 bg-white border border-slate-200">
           <AlertCircle className="w-12 h-12 text-red-500 mx-auto mb-3" />
-          <p className="text-slate-400 font-medium">Access Denied</p>
+          <p className="text-slate-700 font-semibold">Access Denied</p>
           <p className="text-slate-500 text-sm mt-1">You do not have permission to view compliance issues.</p>
         </div>
       </div>
@@ -491,7 +491,7 @@ export default function CompliancePage() {
       <div className="flex items-start justify-between mb-6 flex-wrap gap-3">
         <div>
           <h1 className="page-header flex items-center gap-2">
-            <AlertTriangle className="w-6 h-6 text-yellow-400" />
+            <AlertTriangle className="w-6 h-6 text-yellow-600" />
             Compliance Issues
           </h1>
           <p className="page-subheader">
@@ -523,34 +523,34 @@ export default function CompliancePage() {
 
       {/* KPI Cards */}
       <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 mb-6">
-        <div className="card px-4 py-3 text-center">
-          <p className="text-2xl font-bold text-yellow-400">{openCount}</p>
+        <div className="card px-4 py-3 text-center bg-white border border-slate-200">
+          <p className="text-2xl font-bold text-yellow-600">{openCount}</p>
           <p className="text-slate-500 text-xs mt-0.5">Open Issues</p>
         </div>
-        <div className="card px-4 py-3 text-center">
-          <p className="text-2xl font-bold text-blue-400">{pendingCount}</p>
+        <div className="card px-4 py-3 text-center bg-white border border-slate-200">
+          <p className="text-2xl font-bold text-blue-600">{pendingCount}</p>
           <p className="text-slate-500 text-xs mt-0.5">Pending Review</p>
         </div>
-        <div className="card px-4 py-3 text-center border-red-700/30">
-          <p className={`text-2xl font-bold ${overdueCount > 0 ? 'text-red-400 pulse-glow' : 'text-slate-400'}`}>
+        <div className="card px-4 py-3 text-center bg-white border border-slate-200">
+          <p className={`text-2xl font-bold ${overdueCount > 0 ? 'text-red-600 pulse-glow' : 'text-slate-500'}`}>
             {overdueCount}
           </p>
           <p className="text-slate-500 text-xs mt-0.5">Overdue</p>
         </div>
-        <div className="card px-4 py-3 text-center border-red-900/30">
-          <p className="text-2xl font-bold text-red-400">{criticalCount}</p>
+        <div className="card px-4 py-3 text-center bg-white border border-slate-200">
+          <p className="text-2xl font-bold text-red-600">{criticalCount}</p>
           <p className="text-slate-500 text-xs mt-0.5">Critical Open</p>
         </div>
-        <div className="card px-4 py-3 text-center">
-          <p className="text-2xl font-bold text-brand-400">{resolvedCount}</p>
+        <div className="card px-4 py-3 text-center bg-white border border-slate-200">
+          <p className="text-2xl font-bold text-brand-600">{resolvedCount}</p>
           <p className="text-slate-500 text-xs mt-0.5">Resolved</p>
         </div>
       </div>
 
       {/* Overdue Alert Banner */}
       {overdueCount > 0 && (
-        <div className="mb-4 flex items-center gap-3 bg-red-950/40 border border-red-700/50 text-red-300 px-4 py-3 rounded-xl text-sm">
-          <AlertTriangle className="w-5 h-5 text-red-400 flex-shrink-0" />
+        <div className="mb-4 flex items-center gap-3 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl text-sm">
+          <AlertTriangle className="w-5 h-5 text-red-500 flex-shrink-0" />
           <span>
             <strong>{overdueCount} issue{overdueCount > 1 ? 's are' : ' is'} overdue.</strong>{' '}
             Immediate attention required. Filter by "Open" to view.
@@ -561,16 +561,16 @@ export default function CompliancePage() {
       {/* Filters */}
       <div className="flex flex-col sm:flex-row gap-3 mb-4">
         {/* Status tabs */}
-        <div className="flex gap-1 bg-slate-800/50 rounded-xl p-1 border border-slate-700/50">
+        <div className="flex gap-1 bg-slate-100 rounded-xl p-1 border border-slate-200 shadow-sm flex-wrap">
           {[['ALL', 'All'], ['OPEN', 'Open'], ['PENDING_REVIEW', 'Pending Review'], ['RESOLVED', 'Resolved']].map(([val, label]) => (
             <button
               key={val}
               id={`compliance-status-${val.toLowerCase()}`}
               onClick={() => setStatusFilter(val)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-150 ${
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all duration-150 ${
                 statusFilter === val
-                  ? 'bg-yellow-600/20 text-yellow-300 border border-yellow-500/30'
-                  : 'text-slate-400 hover:text-slate-200'
+                  ? 'bg-white text-yellow-600 border border-slate-200 shadow-sm font-bold'
+                  : 'text-slate-500 hover:text-slate-800'
               }`}
             >
               {label}
@@ -579,16 +579,16 @@ export default function CompliancePage() {
         </div>
 
         {/* Severity filter */}
-        <div className="flex gap-1 bg-slate-800/50 rounded-xl p-1 border border-slate-700/50">
+        <div className="flex gap-1 bg-slate-100 rounded-xl p-1 border border-slate-200 shadow-sm flex-wrap">
           {['All', 'Critical', 'High', 'Medium', 'Low'].map((s) => (
             <button
               key={s}
               id={`sev-${s.toLowerCase()}`}
               onClick={() => setSeverityFilter(s)}
-              className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-all duration-150 ${
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all duration-150 ${
                 severityFilter === s
-                  ? 'bg-slate-600 text-slate-200 border border-slate-500'
-                  : 'text-slate-400 hover:text-slate-200'
+                  ? 'bg-white text-slate-800 border border-slate-200 shadow-sm font-bold'
+                  : 'text-slate-500 hover:text-slate-800'
               }`}
             >
               {s}
@@ -611,13 +611,13 @@ export default function CompliancePage() {
 
       {/* Error */}
       {error && (
-        <div className="card p-4 border-red-700/50 text-red-300 text-sm mb-4 flex items-center gap-2">
+        <div className="card p-4 border-red-200 bg-red-50 text-red-700 text-sm mb-4 flex items-center gap-2">
           <AlertCircle className="w-4 h-4" /> {error}
         </div>
       )}
 
       {/* Table */}
-      <div className="table-wrapper">
+      <div className="table-wrapper border border-slate-200 bg-white shadow-sm">
         <table>
           <thead>
             <tr>
@@ -635,7 +635,7 @@ export default function CompliancePage() {
                 <tr key={i}>
                   {Array.from({ length: 6 }).map((__, j) => (
                     <td key={j}>
-                      <div className="h-4 bg-slate-700/50 rounded animate-pulse" />
+                      <div className="h-4 bg-slate-200 rounded animate-pulse" />
                     </td>
                   ))}
                 </tr>
