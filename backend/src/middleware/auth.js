@@ -39,4 +39,4 @@ const requireOwnDepartmentOrAdmin = asyncHandler(async (req, res, next) => {
   next();
 });
 
-module.exports = { protect, requireRole, requireOwnDepartmentOrAdmin };
+module.exports = { protect, verifyToken: protect, requireRole, requireOwnDepartmentOrAdmin };
