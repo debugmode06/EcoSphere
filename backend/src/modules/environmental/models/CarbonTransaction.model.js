@@ -6,4 +6,4 @@ const mongoose = require('mongoose');
 
 const carbonTransactionSchema = new mongoose.Schema({}, { timestamps: true });
 
-module.exports = mongoose.model('CarbonTransaction', carbonTransactionSchema);
+module.exports = mongoose.models.CarbonTransaction || mongoose.model('CarbonTransaction', carbonTransactionSchema);

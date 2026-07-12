@@ -6,4 +6,4 @@ const mongoose = require('mongoose');
 
 const csrActivitySchema = new mongoose.Schema({}, { timestamps: true });
 
-module.exports = mongoose.model('CsrActivity', csrActivitySchema);
+module.exports = mongoose.models.CsrActivity || mongoose.model('CsrActivity', csrActivitySchema);

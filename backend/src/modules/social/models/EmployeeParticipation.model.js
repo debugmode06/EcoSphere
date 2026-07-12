@@ -7,4 +7,4 @@ const mongoose = require('mongoose');
 
 const employeeParticipationSchema = new mongoose.Schema({}, { timestamps: true });
 
-module.exports = mongoose.model('EmployeeParticipation', employeeParticipationSchema);
+module.exports = mongoose.models.EmployeeParticipation || mongoose.model('EmployeeParticipation', employeeParticipationSchema);

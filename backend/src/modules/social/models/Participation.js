@@ -43,4 +43,4 @@ const participationSchema = new mongoose.Schema({
 // Ensure one participation record per employee per activity
 participationSchema.index({ employeeId: 1, csrActivityId: 1 }, { unique: true });
 
-module.exports = mongoose.model('Participation', participationSchema);
+module.exports = mongoose.models.Participation || mongoose.model('Participation', participationSchema);

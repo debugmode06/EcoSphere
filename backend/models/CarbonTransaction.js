@@ -76,7 +76,7 @@ const carbonTransactionSchema = new mongoose.Schema(
   }
 );
 
-module.exports = mongoose.model(
+module.exports = mongoose.models.CarbonTransaction || mongoose.model(
   "CarbonTransaction",
   carbonTransactionSchema,
   "carbonTransactions"

@@ -12,7 +12,7 @@ const csrActivitySchema = new mongoose.Schema({
   },
   categoryId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Category',
+    ref: 'SocialCategory',
     required: true,
   },
   departmentId: {
@@ -54,4 +54,4 @@ const csrActivitySchema = new mongoose.Schema({
   },
 }, { timestamps: true });
 
-module.exports = mongoose.model('CsrActivity', csrActivitySchema);
+module.exports = mongoose.models.CsrActivity || mongoose.model('CsrActivity', csrActivitySchema);

@@ -49,7 +49,7 @@ const environmentalGoalSchema = new mongoose.Schema(
   }
 );
 
-module.exports = mongoose.model(
+module.exports = mongoose.models.EnvironmentalGoal || mongoose.model(
   "EnvironmentalGoal",
   environmentalGoalSchema,
   "environmentalGoals"

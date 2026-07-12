@@ -5,4 +5,4 @@ const mongoose = require('mongoose');
 
 const environmentalGoalSchema = new mongoose.Schema({}, { timestamps: true });
 
-module.exports = mongoose.model('EnvironmentalGoal', environmentalGoalSchema);
+module.exports = mongoose.models.EnvironmentalGoal || mongoose.model('EnvironmentalGoal', environmentalGoalSchema);

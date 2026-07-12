@@ -5,4 +5,4 @@ const mongoose = require('mongoose');
 
 const emissionFactorSchema = new mongoose.Schema({}, { timestamps: true });
 
-module.exports = mongoose.model('EmissionFactor', emissionFactorSchema);
+module.exports = mongoose.models.EmissionFactor || mongoose.model('EmissionFactor', emissionFactorSchema);

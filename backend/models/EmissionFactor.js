@@ -49,7 +49,7 @@ const emissionFactorSchema = new mongoose.Schema({
     timestamps: true
 });
 
-module.exports = mongoose.model(
+module.exports = mongoose.models.EmissionFactor || mongoose.model(
     "EmissionFactor",
     emissionFactorSchema,
     "emissionFactors"
