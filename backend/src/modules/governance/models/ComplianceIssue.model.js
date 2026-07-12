@@ -36,7 +36,7 @@ const complianceIssueSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ['OPEN', 'RESOLVED'],
+      enum: ['OPEN', 'PENDING_REVIEW', 'RESOLVED'],
       default: 'OPEN',
       index: true,
     },
@@ -46,6 +46,11 @@ const complianceIssueSchema = new mongoose.Schema(
       index: true,
     },
     resolutionNotes: {
+      type: String,
+      trim: true,
+      default: '',
+    },
+    resolutionProofUrl: {
       type: String,
       trim: true,
       default: '',

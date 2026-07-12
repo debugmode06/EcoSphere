@@ -64,12 +64,12 @@ const checkAcknowledgement = asyncHandler(async (req, res) => {
 // ─── AUDITS ───────────────────────────────────────────────────────────────────
 
 const listAudits = asyncHandler(async (req, res) => {
-  const audits = await service.getAudits(req.query);
+  const audits = await service.getAudits(req.query, req.user.role, req.user.department);
   res.json({ audits });
 });
 
 const getAudit = asyncHandler(async (req, res) => {
-  const audit = await service.getAuditById(req.params.id);
+  const audit = await service.getAuditById(req.params.id, req.user.role, req.user.department);
   res.json({ audit });
 });
 
@@ -104,9 +104,15 @@ const createComplianceIssue = asyncHandler(async (req, res) => {
 });
 
 const resolveComplianceIssue = asyncHandler(async (req, res) => {
-  const { resolutionNotes } = req.body;
-  const issue = await service.resolveIssue(req.params.id, resolutionNotes);
-  res.json({ issue, message: 'Compliance issue resolved' });
+  const { resolutionNotes, resolutionProofUrl } = req.body;
+  const issue = await service.resolveIssue(req.params.id, resolutionNotes, resolutionProofUrl);
+  res.json({ issue, message: 'Compliance issue submitted for review' });
+});
+
+const reviewComplianceIssue = asyncHandler(async (req, res) => {
+  const { status, feedback } = req.body;
+  const issue = await service.reviewIssueResolution(req.params.id, status, feedback);
+  res.json({ issue, message: `Compliance issue status reviewed to ${status}` });
 });
 
 const updateComplianceIssue = asyncHandler(async (req, res) => {
@@ -154,6 +160,7 @@ module.exports = {
   getComplianceIssue,
   createComplianceIssue,
   resolveComplianceIssue,
+  reviewComplianceIssue,
   updateComplianceIssue,
   // Dashboard
   getDashboard,

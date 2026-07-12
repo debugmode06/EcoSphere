@@ -33,6 +33,8 @@ export const createComplianceIssue = (data) =>
   client.post('/governance/compliance-issues', data);
 export const resolveIssue = (id, data) =>
   client.patch(`/governance/compliance-issues/${id}/resolve`, data);
+export const reviewIssue = (id, data) =>
+  client.post(`/governance/compliance-issues/${id}/review`, data);
 export const updateComplianceIssue = (id, data) =>
   client.patch(`/governance/compliance-issues/${id}`, data);
 

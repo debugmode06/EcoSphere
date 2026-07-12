@@ -98,27 +98,27 @@ router.post(
 
 // ─── AUDITS ───────────────────────────────────────────────────────────────────
 
-// GET  /api/governance/audits
-router.get('/audits', verifyToken, ctrl.listAudits);
+// GET  /api/governance/audits                (ADMIN, MANAGER)
+router.get('/audits', verifyToken, requireRole('ADMIN', 'MANAGER'), ctrl.listAudits);
 
-// GET  /api/governance/audits/:id
-router.get('/audits/:id', verifyToken, ctrl.getAudit);
+// GET  /api/governance/audits/:id            (ADMIN, MANAGER)
+router.get('/audits/:id', verifyToken, requireRole('ADMIN', 'MANAGER'), ctrl.getAudit);
 
-// POST /api/governance/audits                (ADMIN, MANAGER)
+// POST /api/governance/audits                (ADMIN only)
 router.post(
   '/audits',
   verifyToken,
-  requireRole('ADMIN', 'MANAGER'),
+  requireRole('ADMIN'),
   v.validateCreateAudit,
   validate,
   ctrl.createAudit
 );
 
-// PATCH /api/governance/audits/:id           (ADMIN, MANAGER)
+// PATCH /api/governance/audits/:id           (ADMIN only)
 router.patch(
   '/audits/:id',
   verifyToken,
-  requireRole('ADMIN', 'MANAGER'),
+  requireRole('ADMIN'),
   v.validateUpdateAudit,
   validate,
   ctrl.updateAudit
@@ -126,43 +126,52 @@ router.patch(
 
 // ─── COMPLIANCE ISSUES ────────────────────────────────────────────────────────
 
-// GET  /api/governance/compliance-issues
+// GET  /api/governance/compliance-issues     (ADMIN, MANAGER)
 router.get(
   '/compliance-issues',
   verifyToken,
+  requireRole('ADMIN', 'MANAGER'),
   v.validateComplianceQuery,
   validate,
   ctrl.listComplianceIssues
 );
 
-// GET  /api/governance/compliance-issues/:id
-router.get('/compliance-issues/:id', verifyToken, ctrl.getComplianceIssue);
+// GET  /api/governance/compliance-issues/:id (ADMIN, MANAGER)
+router.get('/compliance-issues/:id', verifyToken, requireRole('ADMIN', 'MANAGER'), ctrl.getComplianceIssue);
 
-// POST /api/governance/compliance-issues     (ADMIN, MANAGER)
+// POST /api/governance/compliance-issues     (ADMIN only)
 router.post(
   '/compliance-issues',
   verifyToken,
-  requireRole('ADMIN', 'MANAGER'),
+  requireRole('ADMIN'),
   v.validateCreateComplianceIssue,
   validate,
   ctrl.createComplianceIssue
 );
 
-// PATCH /api/governance/compliance-issues/:id/resolve  (ADMIN, MANAGER)
+// PATCH /api/governance/compliance-issues/:id/resolve  (MANAGER only)
 router.patch(
   '/compliance-issues/:id/resolve',
   verifyToken,
-  requireRole('ADMIN', 'MANAGER'),
+  requireRole('MANAGER'),
   v.validateResolveIssue,
   validate,
   ctrl.resolveComplianceIssue
 );
 
-// PATCH /api/governance/compliance-issues/:id          (ADMIN, MANAGER)
+// POST /api/governance/compliance-issues/:id/review   (ADMIN only)
+router.post(
+  '/compliance-issues/:id/review',
+  verifyToken,
+  requireRole('ADMIN'),
+  ctrl.reviewComplianceIssue
+);
+
+// PATCH /api/governance/compliance-issues/:id          (ADMIN only)
 router.patch(
   '/compliance-issues/:id',
   verifyToken,
-  requireRole('ADMIN', 'MANAGER'),
+  requireRole('ADMIN'),
   v.validateUpdateComplianceIssue,
   validate,
   ctrl.updateComplianceIssue

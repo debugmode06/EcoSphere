@@ -156,12 +156,20 @@ const hasEmployeeAcknowledged = async (policyId, employeeId) => {
 // ─── AUDITS ───────────────────────────────────────────────────────────────────
 
 /**
- * List all audits with optional status filter, dept populated
+ * List all audits with optional status filter, dept populated, gated by role
  */
-const getAudits = async (query = {}) => {
+const getAudits = async (query = {}, userRole, userDepartment) => {
+  if (userRole === 'EMPLOYEE') {
+    throw Object.assign(new Error('Access denied to audits'), { statusCode: 403 });
+  }
+
   const filter = {};
   if (query.status) filter.status = query.status;
   if (query.department) filter.department = query.department;
+
+  if (userRole === 'MANAGER') {
+    filter.department = userDepartment;
+  }
 
   return Audit.find(filter)
     .populate('department', 'name code')
@@ -171,9 +179,18 @@ const getAudits = async (query = {}) => {
 /**
  * Get a single audit by ID
  */
-const getAuditById = async (id) => {
+const getAuditById = async (id, userRole, userDepartment) => {
+  if (userRole === 'EMPLOYEE') {
+    throw Object.assign(new Error('Access denied to audits'), { statusCode: 403 });
+  }
+
   const audit = await Audit.findById(id).populate('department', 'name code');
   if (!audit) throw Object.assign(new Error('Audit not found'), { statusCode: 404 });
+
+  if (userRole === 'MANAGER' && (!audit.department || audit.department._id.toString() !== userDepartment.toString())) {
+    throw Object.assign(new Error('Access denied to audits outside department'), { statusCode: 403 });
+  }
+
   return audit;
 };
 
@@ -255,19 +272,47 @@ const createComplianceIssue = async (data) => {
 };
 
 /**
- * Resolve a compliance issue → status = RESOLVED, set resolvedDate
+ * Resolve a compliance issue → status = PENDING_REVIEW, set resolutionProofUrl
  */
-const resolveIssue = async (id, resolutionNotes) => {
+const resolveIssue = async (id, resolutionNotes, resolutionProofUrl) => {
   const issue = await ComplianceIssue.findById(id);
   if (!issue) throw Object.assign(new Error('Compliance issue not found'), { statusCode: 404 });
   if (issue.status === 'RESOLVED') {
     throw Object.assign(new Error('Issue is already resolved'), { statusCode: 400 });
   }
 
-  issue.status = 'RESOLVED';
+  issue.status = 'PENDING_REVIEW';
   issue.isOverdue = false;
-  issue.resolvedDate = new Date();
   if (resolutionNotes) issue.resolutionNotes = resolutionNotes;
+  if (resolutionProofUrl) issue.resolutionProofUrl = resolutionProofUrl;
+
+  await issue.save();
+  return issue;
+};
+
+/**
+ * Review a compliance issue resolution (approve/reject)
+ */
+const reviewIssueResolution = async (id, status, feedback) => {
+  const issue = await ComplianceIssue.findById(id);
+  if (!issue) throw Object.assign(new Error('Compliance issue not found'), { statusCode: 404 });
+  if (issue.status !== 'PENDING_REVIEW') {
+    throw Object.assign(new Error('Issue is not pending review'), { statusCode: 400 });
+  }
+
+  if (status === 'RESOLVED') {
+    issue.status = 'RESOLVED';
+    issue.resolvedDate = new Date();
+  } else if (status === 'OPEN') {
+    issue.status = 'OPEN';
+    // isOverdue will be re-evaluated on next save / read
+  } else {
+    throw Object.assign(new Error('Invalid status for review. Must be RESOLVED or OPEN'), { statusCode: 400 });
+  }
+
+  if (feedback) {
+    issue.resolutionNotes = (issue.resolutionNotes ? issue.resolutionNotes + '\n' : '') + 'Reviewer Notes: ' + feedback;
+  }
 
   await issue.save();
   return issue;
@@ -462,6 +507,7 @@ module.exports = {
   getComplianceIssueById,
   createComplianceIssue,
   resolveIssue,
+  reviewIssueResolution,
   updateComplianceIssue,
   // Dashboard
   getDashboardStats,
