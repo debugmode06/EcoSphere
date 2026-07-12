@@ -38,5 +38,10 @@ export const reviewIssue = (id, data) =>
 export const updateComplianceIssue = (id, data) =>
   client.patch(`/governance/compliance-issues/${id}`, data);
 
-// ─── Dashboard ────────────────────────────────────────────────────────────────
+// ─── Dashboard & Scoring ──────────────────────────────────────────────────────
 export const getGovernanceDashboard = () => client.get('/governance/dashboard');
+export const getGovernanceScore = () => client.get('/governance/score/org');
+export const getDeptGovernanceScore = (id) => client.get(`/governance/score/dept/${id}`);
+export const getDeptLeaderboard = () => client.get('/governance/score/dept');
+export const exportGovernanceData = (type) =>
+  client.get(`/governance/export`, { params: { type }, responseType: 'blob' });

@@ -11,8 +11,10 @@ import Reports from '../modules/core/pages/Reports';
 import Settings from '../modules/core/pages/Settings';
 
 // Environmental
-import EmissionsPage from '../modules/environmental/pages/EmissionsPage';
-import GoalsPage from '../modules/environmental/pages/GoalsPage';
+import EnvironmentalDashboard from '../modules/environmental/pages/EnvironmentalDashboard';
+import CarbonTransactionsPage from '../modules/environmental/pages/CarbonTransactionsPage';
+import EmissionFactorsPage from '../modules/environmental/pages/EmissionFactorsPage';
+import EnvironmentalGoalsPage from '../modules/environmental/pages/EnvironmentalGoalsPage';
 
 // Social — our new pages
 import Categories from '../modules/social/pages/Categories';
@@ -21,6 +23,7 @@ import Participation from '../modules/social/pages/Participation';
 import Approvals from '../modules/social/pages/Approvals';
 
 // Governance
+import GovernanceDashboard from '../modules/governance/pages/GovernanceDashboard';
 import PoliciesPage from '../modules/governance/pages/PoliciesPage';
 import AuditsPage from '../modules/governance/pages/AuditsPage';
 import CompliancePage from '../modules/governance/pages/CompliancePage';
@@ -54,8 +57,10 @@ export default function AppRouter() {
         <Route path="/core/reports" element={<ProtectedRoute><Reports /></ProtectedRoute>} />
         <Route path="/core/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
 
-        <Route path="/environmental/emissions" element={<ProtectedRoute><EmissionsPage /></ProtectedRoute>} />
-        <Route path="/environmental/goals" element={<ProtectedRoute><GoalsPage /></ProtectedRoute>} />
+        <Route path="/environmental/dashboard" element={<ProtectedRoute><EnvironmentalDashboard /></ProtectedRoute>} />
+        <Route path="/environmental/emissions" element={<ProtectedRoute><CarbonTransactionsPage /></ProtectedRoute>} />
+        <Route path="/environmental/factors" element={<ProtectedRoute><EmissionFactorsPage /></ProtectedRoute>} />
+        <Route path="/environmental/goals" element={<ProtectedRoute><EnvironmentalGoalsPage /></ProtectedRoute>} />
 
         {/* Social Module */}
         <Route path="/social/categories" element={<ProtectedRoute><Categories /></ProtectedRoute>} />
@@ -63,6 +68,7 @@ export default function AppRouter() {
         <Route path="/social/participations" element={<ProtectedRoute><Participation /></ProtectedRoute>} />
         <Route path="/social/approvals" element={<ProtectedRoute><Approvals /></ProtectedRoute>} />
 
+        <Route path="/governance/dashboard" element={<ProtectedRoute><GovernanceDashboard /></ProtectedRoute>} />
         <Route path="/governance/policies" element={<ProtectedRoute><PoliciesPage /></ProtectedRoute>} />
         <Route path="/governance/audits" element={<ProtectedRoute><AuditsPage /></ProtectedRoute>} />
         <Route path="/governance/compliance" element={<ProtectedRoute><CompliancePage /></ProtectedRoute>} />

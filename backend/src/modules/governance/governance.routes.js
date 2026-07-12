@@ -11,9 +11,21 @@ const validate = require('../../middleware/validate');
 const ctrl = require('./governance.controller');
 const v = require('./governance.validation');
 
-// ─── DASHBOARD ─────────────────────────────────────────────────────────────────
+// ─── DASHBOARD & SCORING ───────────────────────────────────────────────────────
 // GET /api/governance/dashboard
 router.get('/dashboard', verifyToken, ctrl.getDashboard);
+
+// GET /api/governance/score/org
+router.get('/score/org', verifyToken, ctrl.getOrgScore);
+
+// GET /api/governance/score/dept (leaderboard)
+router.get('/score/dept', verifyToken, ctrl.getAllDeptScores);
+
+// GET /api/governance/score/dept/:id
+router.get('/score/dept/:id', verifyToken, ctrl.getDeptScore);
+
+// GET /api/governance/export
+router.get('/export', verifyToken, requireRole('ADMIN', 'MANAGER'), ctrl.exportGovernanceData);
 
 // ─── POLICIES ─────────────────────────────────────────────────────────────────
 

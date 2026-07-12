@@ -38,6 +38,7 @@ function buildNavGroups(role) {
     {
       label: 'Governance',
       items: [
+        { to: '/governance/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
         { to: '/governance/policies', icon: ShieldCheck, label: 'Policies' },
         { to: '/governance/audits', icon: ShieldCheck, label: 'Audits' },
         { to: '/governance/compliance', icon: ShieldCheck, label: 'Compliance' },

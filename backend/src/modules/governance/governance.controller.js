@@ -137,6 +137,38 @@ const sendPolicyReminder = asyncHandler(async (req, res) => {
   res.json({ message: 'Reminders triggered successfully', ...result });
 });
 
+// ─── SCORING ─────────────────────────────────────────────────────────────────
+
+const getOrgScore = asyncHandler(async (req, res) => {
+  const scoreData = await service.getOrgScore();
+  res.json(scoreData);
+});
+
+const getDeptScore = asyncHandler(async (req, res) => {
+  const scoreData = await service.getDeptScore(req.params.id);
+  res.json(scoreData);
+});
+
+const getAllDeptScores = asyncHandler(async (req, res) => {
+  const scores = await service.getAllDeptScores();
+  res.json({ leaderboard: scores });
+});
+
+// ─── EXPORT ──────────────────────────────────────────────────────────────────
+
+const exportGovernanceData = asyncHandler(async (req, res) => {
+  const { type } = req.query;
+  if (!type) {
+    return res.status(400).json({ message: 'Export type is required (policies, audits, compliance)' });
+  }
+
+  const csvData = await service.exportGovernanceData(type);
+  
+  res.setHeader('Content-Type', 'text/csv');
+  res.setHeader('Content-Disposition', `attachment; filename="governance_${type}_export.csv"`);
+  res.send(csvData);
+});
+
 module.exports = {
   // Policies
   listPolicies,
@@ -148,8 +180,16 @@ module.exports = {
   acknowledgePolicy,
   listPolicyAcknowledgements,
   checkAcknowledgement,
+  // Dashboard
+  getDashboard,
   getPolicyStats,
   sendPolicyReminder,
+  // Scoring
+  getOrgScore,
+  getDeptScore,
+  getAllDeptScores,
+  // Export
+  exportGovernanceData,
   // Audits
   listAudits,
   getAudit,

@@ -7,6 +7,11 @@ const complianceIssueSchema = new mongoose.Schema(
       ref: 'Audit',
       default: null,
     },
+    department: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Department',
+      required: false,
+    },
     severity: {
       type: String,
       enum: ['Low', 'Medium', 'High', 'Critical'],

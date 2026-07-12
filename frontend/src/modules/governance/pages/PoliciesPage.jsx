@@ -16,8 +16,10 @@ import {
   getPolicyStats,
   sendPolicyReminder,
   updatePolicy,
-  createPolicyVersion
+  createPolicyVersion,
+  exportGovernanceData
 } from '../../../api/governanceApi';
+import GovernanceAlerts from '../components/GovernanceAlerts';
 
 // ─── Helper: Map policy status → badge variant ────────────────────────────────
 const statusVariant = (s) => {
@@ -613,6 +615,21 @@ export default function PoliciesPage() {
     setShowForm(true);
   };
 
+  const handleExport = async () => {
+    try {
+      const res = await exportGovernanceData('policies');
+      const url = window.URL.createObjectURL(new Blob([res.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'policies_export.csv');
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    } catch (err) {
+      console.error('Failed to export policies', err);
+    }
+  };
+
   const filteredPolicies = filter === 'All'
     ? policies
     : policies.filter((p) => p.status === filter);
@@ -633,6 +650,8 @@ export default function PoliciesPage() {
         </div>
       )}
 
+      <GovernanceAlerts />
+
       {/* Header */}
       <div className="flex items-start justify-between mb-6 flex-wrap gap-3">
         <div>
@@ -652,6 +671,13 @@ export default function PoliciesPage() {
           >
             <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
             Refresh
+          </button>
+          <button
+            onClick={handleExport}
+            className="btn-secondary flex items-center gap-2 text-sm"
+          >
+            <FileDown className="w-4 h-4" />
+            Export CSV
           </button>
           {role === 'ADMIN' && (
             <button

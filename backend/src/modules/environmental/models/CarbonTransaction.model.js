@@ -1,9 +1,48 @@
 const mongoose = require('mongoose');
 
-// TODO (Person 1): Define CarbonTransaction schema
-// Fields: department (ref), emissionFactor (ref), quantity, calculatedEmission (auto-computed), source enum, date
-// Business rule: calculatedEmission = quantity * emissionFactor.factorValue (computed in service)
+const carbonTransactionSchema = new mongoose.Schema({
+  emissionFactor: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "EmissionFactor",
+    required: true
+  },
 
-const carbonTransactionSchema = new mongoose.Schema({}, { timestamps: true });
+  quantity: {
+    type: Number,
+    required: true
+  },
 
-module.exports = mongoose.models.CarbonTransaction || mongoose.model('CarbonTransaction', carbonTransactionSchema);
+  carbonEmission: {
+    type: Number,
+    required: true
+  },
+
+  department: {
+    type: String
+  },
+
+  description: {
+    type: String
+  },
+
+  transactionDate: {
+    type: Date,
+    default: Date.now
+  },
+
+  status: {
+    type: String,
+    enum: ["active", "inactive"],
+    default: "active"
+  }
+}, {
+  timestamps: true
+});
+
+module.exports =
+  mongoose.models.CarbonTransaction ||
+  mongoose.model(
+    "CarbonTransaction",
+    carbonTransactionSchema,
+    "carbonTransactions"
+  );

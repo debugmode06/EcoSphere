@@ -26,7 +26,7 @@ const auditSchema = new mongoose.Schema(
     },
     status: {
       type: String,
-      enum: ['Scheduled', 'In Progress', 'Completed', 'Cancelled'],
+      enum: ['Scheduled', 'In Progress', 'Under Review', 'Completed', 'Cancelled'],
       default: 'Scheduled',
       index: true,
     },

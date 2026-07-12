@@ -2,19 +2,21 @@ import { useState, useEffect, useCallback } from 'react';
 import {
   Search, Plus, RefreshCw, FileSearch,
   Calendar, Building2, AlertCircle, CheckCircle2,
-  Clock, XCircle, ChevronDown, FileText
+  Clock, XCircle, ChevronDown, FileText, FileDown
 } from 'lucide-react';
 import Modal from '../../../components/ui/Modal';
 import StatusBadge from '../../../components/ui/StatusBadge';
 import { useAuth } from '../../../context/AuthContext';
-import { getAudits, createAudit, updateAudit } from '../../../api/governanceApi';
+import { getAudits, createAudit, updateAudit, exportGovernanceData } from '../../../api/governanceApi';
 import { getDepartments } from '../../../api/coreApi';
+import GovernanceAlerts from '../components/GovernanceAlerts';
 
 // ─── Helpers ─────────────────────────────────────────────────────────────────
 const auditStatusVariant = (s) => {
   if (s === 'Completed') return 'green';
   if (s === 'In Progress') return 'blue';
   if (s === 'Scheduled') return 'yellow';
+  if (s === 'Under Review') return 'yellow';
   if (s === 'Cancelled') return 'red';
   return 'yellow';
 };
@@ -22,11 +24,12 @@ const auditStatusVariant = (s) => {
 const auditStatusIcon = (s) => {
   if (s === 'Completed') return <CheckCircle2 className="w-3.5 h-3.5" />;
   if (s === 'In Progress') return <Clock className="w-3.5 h-3.5" />;
+  if (s === 'Under Review') return <FileSearch className="w-3.5 h-3.5" />;
   if (s === 'Cancelled') return <XCircle className="w-3.5 h-3.5" />;
   return <Calendar className="w-3.5 h-3.5" />;
 };
 
-const AUDIT_STATUSES = ['Scheduled', 'In Progress', 'Completed', 'Cancelled'];
+const AUDIT_STATUSES = ['Scheduled', 'In Progress', 'Under Review', 'Completed', 'Cancelled'];
 
 // ─── Create Audit Modal ───────────────────────────────────────────────────────
 function CreateAuditModal({ open, onClose, onCreated }) {
@@ -389,6 +392,21 @@ export default function AuditsPage() {
     setTimeout(() => setToast(''), 3500);
   };
 
+  const handleExport = async () => {
+    try {
+      const res = await exportGovernanceData('audits');
+      const url = window.URL.createObjectURL(new Blob([res.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'audits_export.csv');
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    } catch (err) {
+      console.error('Failed to export audits', err);
+    }
+  };
+
   const canEdit = role === 'ADMIN';
   const canGenerateReport = role === 'ADMIN' || role === 'MANAGER';
 
@@ -431,6 +449,7 @@ export default function AuditsPage() {
     All: audits.length,
     Scheduled: audits.filter((a) => a.status === 'Scheduled').length,
     'In Progress': audits.filter((a) => a.status === 'In Progress').length,
+    'Under Review': audits.filter((a) => a.status === 'Under Review').length,
     Completed: audits.filter((a) => a.status === 'Completed').length,
     Cancelled: audits.filter((a) => a.status === 'Cancelled').length,
   };
@@ -443,6 +462,8 @@ export default function AuditsPage() {
           {toast}
         </div>
       )}
+
+      <GovernanceAlerts />
 
       {/* Header */}
       <div className="flex items-start justify-between mb-6 flex-wrap gap-3">
@@ -466,6 +487,14 @@ export default function AuditsPage() {
             Refresh
           </button>
           
+          <button
+            onClick={handleExport}
+            className="btn-secondary flex items-center gap-2 text-sm"
+          >
+            <FileDown className="w-4 h-4" />
+            Export CSV
+          </button>
+
           {canGenerateReport && (
             <button
               id="generate-report-btn"

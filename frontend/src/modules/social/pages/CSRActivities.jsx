@@ -12,7 +12,7 @@ import axiosClient from '../../../api/axiosClient';
 function useDepartments() {
   const [departments, setDepartments] = useState([]);
   useEffect(() => {
-    axiosClient.get('/core/departments').then((r) => setDepartments(r.data.departments || [])).catch(() => {});
+    axiosClient.get('/core/departments').then((r) => setDepartments(r.data.departments || [])).catch(() => { });
   }, []);
   return departments;
 }

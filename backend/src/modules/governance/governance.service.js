@@ -10,6 +10,7 @@ const ComplianceIssue = require('./models/ComplianceIssue.model');
 const Employee = require('../auth/models/Employee.model');
 const Department = require('../core/models/Department.model');
 const { notifyOverdueCompliance } = require('../core/notificationService');
+const scoring = require('./governance.scoring');
 
 // ─── POLICIES ────────────────────────────────────────────────────────────────
 
@@ -167,10 +168,6 @@ const getAudits = async (query = {}, userRole, userDepartment) => {
   if (query.status) filter.status = query.status;
   if (query.department) filter.department = query.department;
 
-  if (userRole === 'MANAGER') {
-    filter.department = userDepartment;
-  }
-
   return Audit.find(filter)
     .populate('department', 'name code')
     .sort({ date: -1 });
@@ -186,10 +183,6 @@ const getAuditById = async (id, userRole, userDepartment) => {
 
   const audit = await Audit.findById(id).populate('department', 'name code');
   if (!audit) throw Object.assign(new Error('Audit not found'), { statusCode: 404 });
-
-  if (userRole === 'MANAGER' && (!audit.department || audit.department._id.toString() !== userDepartment.toString())) {
-    throw Object.assign(new Error('Access denied to audits outside department'), { statusCode: 403 });
-  }
 
   return audit;
 };
@@ -484,6 +477,76 @@ const sendPolicyReminder = async (policyId) => {
   };
 };
 
+// ─── SCORING ─────────────────────────────────────────────────────────────────
+
+const getOrgScore = async () => scoring.computeOrgScore();
+
+const getDeptScore = async (deptId) => scoring.computeDeptScore(deptId);
+
+const getAllDeptScores = async () => scoring.computeAllDeptScores();
+
+// ─── EXPORT ──────────────────────────────────────────────────────────────────
+
+/**
+ * Export governance data as CSV string.
+ * type: 'policies' | 'audits' | 'compliance'
+ */
+const exportGovernanceData = async (type) => {
+  if (type === 'policies') {
+    const policies = await EsgPolicy.find({}).sort({ createdAt: -1 }).lean();
+    const header = 'Title,Status,Version,Priority,ESG Category,Effective Date,Expiry Date,Created At';
+    const rows = policies.map((p) =>
+      [
+        `"${(p.title || '').replace(/"/g, '""')}"`,
+        p.status || '',
+        p.version || '1.0',
+        p.priority || '',
+        p.esgCategory || '',
+        p.effectiveDate ? new Date(p.effectiveDate).toISOString().split('T')[0] : '',
+        p.expiryDate ? new Date(p.expiryDate).toISOString().split('T')[0] : '',
+        p.createdAt ? new Date(p.createdAt).toISOString().split('T')[0] : '',
+      ].join(',')
+    );
+    return [header, ...rows].join('\n');
+  }
+
+  if (type === 'audits') {
+    const audits = await Audit.find({}).populate('department', 'name').sort({ date: -1 }).lean();
+    const header = 'Title,Status,Department,Date,Findings,Created At';
+    const rows = audits.map((a) =>
+      [
+        `"${(a.title || '').replace(/"/g, '""')}"`,
+        a.status || '',
+        a.department ? a.department.name : '',
+        a.date ? new Date(a.date).toISOString().split('T')[0] : '',
+        `"${(a.findings || '').replace(/"/g, '""').replace(/\n/g, ' ')}"`,
+        a.createdAt ? new Date(a.createdAt).toISOString().split('T')[0] : '',
+      ].join(',')
+    );
+    return [header, ...rows].join('\n');
+  }
+
+  if (type === 'compliance') {
+    const issues = await ComplianceIssue.find({}).populate('audit', 'title').sort({ createdAt: -1 }).lean();
+    const header = 'Description,Severity,Status,Owner,Due Date,Overdue,Audit,Created At';
+    const rows = issues.map((i) =>
+      [
+        `"${(i.description || '').replace(/"/g, '""').replace(/\n/g, ' ')}"`,
+        i.severity || '',
+        i.status || '',
+        `"${(i.owner || '').replace(/"/g, '""')}"`,
+        i.dueDate ? new Date(i.dueDate).toISOString().split('T')[0] : '',
+        i.isOverdue ? 'Yes' : 'No',
+        i.audit ? i.audit.title : '',
+        i.createdAt ? new Date(i.createdAt).toISOString().split('T')[0] : '',
+      ].join(',')
+    );
+    return [header, ...rows].join('\n');
+  }
+
+  throw Object.assign(new Error('Invalid export type. Must be policies, audits, or compliance'), { statusCode: 400 });
+};
+
 module.exports = {
   // Policies
   getPolicies,
@@ -511,4 +574,10 @@ module.exports = {
   updateComplianceIssue,
   // Dashboard
   getDashboardStats,
+  // Scoring
+  getOrgScore,
+  getDeptScore,
+  getAllDeptScores,
+  // Export
+  exportGovernanceData,
 };

@@ -1,7 +1,8 @@
 import { useState, useEffect, useCallback } from 'react';
 import {
   AlertTriangle, Plus, RefreshCw, CheckCircle2,
-  Clock, AlertCircle, Search, Flame, ShieldAlert, XCircle, FileText
+  Clock, AlertCircle, Search, Flame, ShieldAlert, XCircle, FileText,
+  FileDown
 } from 'lucide-react';
 import Modal from '../../../components/ui/Modal';
 import { useAuth } from '../../../context/AuthContext';
@@ -10,7 +11,9 @@ import {
   createComplianceIssue,
   resolveIssue,
   reviewIssue,
+  exportGovernanceData
 } from '../../../api/governanceApi';
+import GovernanceAlerts from '../components/GovernanceAlerts';
 
 // ─── Severity config ──────────────────────────────────────────────────────────
 const SEVERITY_CONFIG = {
@@ -429,6 +432,21 @@ export default function CompliancePage() {
     setTimeout(() => setToast(''), 3500);
   };
 
+  const handleExport = async () => {
+    try {
+      const res = await exportGovernanceData('compliance');
+      const url = window.URL.createObjectURL(new Blob([res.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'compliance_export.csv');
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+    } catch (err) {
+      console.error('Failed to export compliance issues', err);
+    }
+  };
+
   const canCreate = role === 'ADMIN';
 
   const load = useCallback(async () => {
@@ -487,6 +505,8 @@ export default function CompliancePage() {
         </div>
       )}
 
+      <GovernanceAlerts />
+
       {/* Header */}
       <div className="flex items-start justify-between mb-6 flex-wrap gap-3">
         <div>
@@ -507,6 +527,13 @@ export default function CompliancePage() {
           >
             <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
             Refresh
+          </button>
+          <button
+            onClick={handleExport}
+            className="btn-secondary flex items-center gap-2 text-sm"
+          >
+            <FileDown className="w-4 h-4" />
+            Export CSV
           </button>
           {canCreate && (
             <button
@@ -546,17 +573,6 @@ export default function CompliancePage() {
           <p className="text-slate-500 text-xs mt-0.5">Resolved</p>
         </div>
       </div>
-
-      {/* Overdue Alert Banner */}
-      {overdueCount > 0 && (
-        <div className="mb-4 flex items-center gap-3 bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-xl text-sm">
-          <AlertTriangle className="w-5 h-5 text-red-500 flex-shrink-0" />
-          <span>
-            <strong>{overdueCount} issue{overdueCount > 1 ? 's are' : ' is'} overdue.</strong>{' '}
-            Immediate attention required. Filter by "Open" to view.
-          </span>
-        </div>
-      )}
 
       {/* Filters */}
       <div className="flex flex-col sm:flex-row gap-3 mb-4">

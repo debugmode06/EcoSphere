@@ -3,12 +3,42 @@ const Category = require('./models/Category.model');
 const asyncHandler = require('../../utils/asyncHandler');
 // Clean — no errors
 
+const CarbonTransaction = require('../../../models/CarbonTransaction');
+const EnvironmentalGoal = require('../../../models/EnvironmentalGoal');
+const CsrActivity = require('../social/models/CSRActivity');
+const Participation = require('../social/models/Participation');
+const ComplianceIssue = require('../governance/models/ComplianceIssue.model');
+const Employee = require('../auth/models/Employee.model');
+
 const getDashboard = asyncHandler(async (req, res) => {
+  // 1. Environmental
+  const emissions = await CarbonTransaction.aggregate([
+    { $group: { _id: null, total: { $sum: '$calculated_emission_kg_co2e' } } }
+  ]);
+  const totalEmissions = emissions.length > 0 ? emissions[0].total : 0;
+  const activeGoals = await EnvironmentalGoal.countDocuments({ status: 'ACTIVE' });
+
+  // 2. Social
+  const activeCSR = await CsrActivity.countDocuments({ status: 'active' });
+  const totalParticipations = await Participation.countDocuments({ status: 'approved' });
+
+  // 3. Governance
+  const openIssues = await ComplianceIssue.countDocuments({ status: 'OPEN' });
+  
+  // 4. Gamification (Leaderboard)
+  const topUsers = await Employee.find().sort({ xp: -1 }).limit(5).select('name role department xp').populate('department', 'name');
+
   res.status(200).json({
-    message: 'Dashboard mock data',
-    scores: { E: 85, S: 70, G: 75, total: 77 },
-    emissions: 1200,
-    employees: 42
+    scores: { E: 82, S: 78, G: 85, total: 81 }, // Placeholder for actual scoring engine
+    metrics: {
+      totalEmissions,
+      activeGoals,
+      activeCSR,
+      totalParticipations,
+      openIssues,
+      totalEmployees: await Employee.countDocuments()
+    },
+    leaderboard: topUsers
   });
 });
 
@@ -41,7 +71,36 @@ const createCategory = asyncHandler(async (req, res) => {
 });
 
 const getReport = asyncHandler(async (req, res) => {
-  res.status(200).json({ message: 'Reports data' });
+  const { fromDate, toDate, departmentId } = req.query;
+  
+  const filter = {};
+  if (departmentId) filter.department = departmentId;
+  if (fromDate || toDate) {
+    filter.createdAt = {};
+    if (fromDate) filter.createdAt.$gte = new Date(fromDate);
+    if (toDate) filter.createdAt.$lte = new Date(toDate);
+  }
+
+  const transactions = await CarbonTransaction.find(filter)
+    .sort({ transaction_date: -1 })
+    .limit(50);
+
+  const complianceIssues = await ComplianceIssue.find(filter)
+    .populate('department', 'name')
+    .sort({ createdAt: -1 })
+    .limit(50);
+
+  const participations = await Participation.find(filter)
+    .populate('employeeId', 'name')
+    .populate('csrActivityId', 'title categoryId departmentId')
+    .sort({ joinedDate: -1 })
+    .limit(50);
+
+  res.status(200).json({
+    environmental: transactions,
+    governance: complianceIssues,
+    social: participations
+  });
 });
 
 const getLeaderboard = asyncHandler(async (req, res) => {
