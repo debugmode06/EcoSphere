@@ -2,8 +2,13 @@
  * EcoSphere Gamification & Governance Module Seed Script
  * Run: node seed.js
  *
+<<<<<<< HEAD
  * Seeds: Departments, Categories, Employees, EsgPolicies, PolicyAcknowledgements,
  *        Audits, ComplianceIssues, Challenges, Badges, Rewards
+=======
+ * Seeds: Departments, Employees, EsgPolicies, PolicyAcknowledgements,
+ *        Audits, ComplianceIssues, Social Categories
+>>>>>>> 6b88b22 (Sync after remote updates)
  */
 
 require('dotenv').config();
@@ -18,12 +23,16 @@ const EsgPolicy = require('./src/modules/governance/models/EsgPolicy.model');
 const PolicyAcknowledgement = require('./src/modules/governance/models/PolicyAcknowledgement.model');
 const Audit = require('./src/modules/governance/models/Audit.model');
 const ComplianceIssue = require('./src/modules/governance/models/ComplianceIssue.model');
+<<<<<<< HEAD
 const Challenge = require('./src/modules/gamification/models/Challenge.model');
 const ChallengeParticipation = require('./src/modules/gamification/models/ChallengeParticipation.model');
 const Badge = require('./src/modules/gamification/models/Badge.model');
 const Reward = require('./src/modules/gamification/models/Reward.model');
 
 const hash = (pw) => bcrypt.hashSync(pw, 10);
+=======
+const Category = require('./src/modules/social/models/Category');
+>>>>>>> 6b88b22 (Sync after remote updates)
 
 async function seed() {
   console.log('🌱 Connecting to MongoDB Atlas...');
@@ -40,10 +49,14 @@ async function seed() {
     PolicyAcknowledgement.deleteMany({}),
     Audit.deleteMany({}),
     ComplianceIssue.deleteMany({}),
+<<<<<<< HEAD
     Challenge.deleteMany({}),
     ChallengeParticipation.deleteMany({}),
     Badge.deleteMany({}),
     Reward.deleteMany({}),
+=======
+    Category.deleteMany({}),
+>>>>>>> 6b88b22 (Sync after remote updates)
   ]);
 
   // ── Departments ──────────────────────────────────────────────────────────
@@ -215,7 +228,7 @@ async function seed() {
       description:
         'HVAC maintenance logs were not maintained for February 2025. Required under ISO 14001 environmental management standard.',
       owner: 'Manager One',
-      dueDate: pastDate, // deliberately past → isOverdue will be set by pre-save
+      dueDate: pastDate,
       status: 'OPEN',
     },
     {
@@ -247,6 +260,7 @@ async function seed() {
     },
   ]);
 
+<<<<<<< HEAD
   // ── Challenges ─────────────────────────────────────────────────────────────
   console.log('🏆 Seeding challenges...');
   await Challenge.insertMany([
@@ -299,6 +313,31 @@ async function seed() {
   ]);
 
 
+=======
+  // ── Social Categories ─────────────────────────────────────────────────────
+  console.log('🏷️  Seeding social categories...');
+  await Category.insertMany([
+    {
+      name: 'Education',
+      description: 'Supporting educational growth, tutoring, and providing supplies to schools.',
+      status: 'Active',
+      createdBy: admin._id,
+    },
+    {
+      name: 'Healthcare',
+      description: 'Organizing medical camps, blood drives, and health awareness campaigns.',
+      status: 'Active',
+      createdBy: admin._id,
+    },
+    {
+      name: 'Environment',
+      description: 'Tree plantation, recycling drives, and neighborhood cleaning initiatives.',
+      status: 'Active',
+      createdBy: admin._id,
+    },
+  ]);
+
+>>>>>>> 6b88b22 (Sync after remote updates)
   console.log('\n✅ Seeding complete!');
   console.log('─────────────────────────────────────────────────────────');
   console.log('  Default login credentials:');
