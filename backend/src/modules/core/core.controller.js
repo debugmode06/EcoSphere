@@ -1,6 +1,7 @@
 const Department = require('./models/Department.model');
 const Category = require('./models/Category.model');
 const asyncHandler = require('../../utils/asyncHandler');
+// Verified clean syntax for IDE watcher
 
 const getDashboard = asyncHandler(async (req, res) => {
   res.status(200).json({
