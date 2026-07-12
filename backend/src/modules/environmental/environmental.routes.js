@@ -1,13 +1,34 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
 
-// TODO (Person 1): Mount environmental routes
-// GET  /emission-factors
-// POST /emission-factors          (ADMIN, MANAGER)
-// GET  /carbon-transactions
-// POST /carbon-transactions       (ADMIN, MANAGER)
-// GET  /goals
-// POST /goals                     (ADMIN, MANAGER)
-// PATCH /goals/:id/progress       (ADMIN, MANAGER)
+const {
+  getAllEmissionFactors,
+  getEmissionFactorById,
+  createEmissionFactor,
+  updateEmissionFactor,
+  deactivateEmissionFactor
+} = require("./environmental.controller");
+
+router.get("/emission-factors", getAllEmissionFactors);
+
+router.get(
+  "/emission-factors/:factorId",
+  getEmissionFactorById
+);
+
+router.post(
+  "/emission-factors",
+  createEmissionFactor
+);
+
+router.put(
+  "/emission-factors/:factorId",
+  updateEmissionFactor
+);
+
+router.delete(
+  "/emission-factors/:factorId",
+  deactivateEmissionFactor
+);
 
 module.exports = router;
