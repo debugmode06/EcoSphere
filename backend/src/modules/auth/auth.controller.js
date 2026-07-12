@@ -29,8 +29,14 @@ const getMe = asyncHandler(async (req, res) => {
   res.status(200).json(employee);
 });
 
+const getEmployees = asyncHandler(async (req, res) => {
+  const employees = await authService.getEmployees();
+  res.status(200).json({ employees });
+});
+
 module.exports = {
   register,
   login,
-  getMe
+  getMe,
+  getEmployees
 };

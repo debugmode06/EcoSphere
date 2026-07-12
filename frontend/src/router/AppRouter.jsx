@@ -7,7 +7,7 @@ import LoginPage from '../modules/auth/pages/LoginPage';
 
 // Core
 import OrgDashboard from '../modules/core/pages/OrgDashboard';
-import Reports from '../modules/core/pages/Reports';
+import CoreReports from '../modules/core/pages/Reports';
 import Settings from '../modules/core/pages/Settings';
 
 // Environmental
@@ -21,6 +21,9 @@ import Categories from '../modules/social/pages/Categories';
 import CSRActivities from '../modules/social/pages/CSRActivities';
 import Participation from '../modules/social/pages/Participation';
 import Approvals from '../modules/social/pages/Approvals';
+import Training from '../modules/social/pages/Training';
+import Diversity from '../modules/social/pages/Diversity';
+import SocialReports from '../modules/social/pages/Reports';
 
 // Governance
 import GovernanceDashboard from '../modules/governance/pages/GovernanceDashboard';
@@ -54,7 +57,7 @@ export default function AppRouter() {
         <Route path="/login" element={isAuthenticated ? <Navigate to="/dashboard" replace /> : <LoginPage />} />
 
         <Route path="/dashboard" element={<ProtectedRoute><OrgDashboard /></ProtectedRoute>} />
-        <Route path="/core/reports" element={<ProtectedRoute><Reports /></ProtectedRoute>} />
+        <Route path="/core/reports" element={<ProtectedRoute><CoreReports /></ProtectedRoute>} />
         <Route path="/core/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
 
         <Route path="/environmental/dashboard" element={<ProtectedRoute><EnvironmentalDashboard /></ProtectedRoute>} />
@@ -67,6 +70,9 @@ export default function AppRouter() {
         <Route path="/social/activities" element={<ProtectedRoute><CSRActivities /></ProtectedRoute>} />
         <Route path="/social/participations" element={<ProtectedRoute><Participation /></ProtectedRoute>} />
         <Route path="/social/approvals" element={<ProtectedRoute><Approvals /></ProtectedRoute>} />
+        <Route path="/social/training" element={<ProtectedRoute><Training /></ProtectedRoute>} />
+        <Route path="/social/diversity" element={<ProtectedRoute><Diversity /></ProtectedRoute>} />
+        <Route path="/social/reports" element={<ProtectedRoute><SocialReports /></ProtectedRoute>} />
 
         <Route path="/governance/dashboard" element={<ProtectedRoute><GovernanceDashboard /></ProtectedRoute>} />
         <Route path="/governance/policies" element={<ProtectedRoute><PoliciesPage /></ProtectedRoute>} />

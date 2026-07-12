@@ -76,9 +76,9 @@ export default function Categories() {
 
       {/* Categories Table */}
       {loading ? (
-        <div className="text-center py-10 text-slate-400">Loading categories...</div>
+        <div className="text-center py-10 text-slate-500">Loading categories...</div>
       ) : categories.length === 0 ? (
-        <div className="card p-10 text-center text-slate-400">
+        <div className="card p-10 text-center text-slate-500">
           No categories found. {isAdmin && 'Click "Add Category" to create the first one.'}
         </div>
       ) : (
@@ -97,22 +97,22 @@ export default function Categories() {
             <tbody className="divide-y divide-slate-700/50">
               {categories.map((cat) => (
                 <tr key={cat._id}>
-                  <td className="font-semibold text-slate-100">{cat.name}</td>
-                  <td className="text-slate-300 max-w-xs truncate">{cat.description || '-'}</td>
+                  <td className="font-semibold text-slate-900">{cat.name}</td>
+                  <td className="text-slate-700 max-w-xs truncate">{cat.description || '-'}</td>
                   <td>
                     <span className={cat.status === 'Active' ? 'badge-green' : 'badge-red'}>
                       {cat.status}
                     </span>
                   </td>
-                  <td className="text-slate-300">{cat.createdBy?.name || 'System'}</td>
-                  <td className="text-slate-400 text-xs">
+                  <td className="text-slate-700">{cat.createdBy?.name || 'System'}</td>
+                  <td className="text-slate-500 text-xs">
                     {new Date(cat.createdAt).toLocaleDateString()}
                   </td>
                   {isAdmin && (
                     <td className="text-right space-x-2">
                       <button
                         onClick={() => handleEditClick(cat)}
-                        className="text-brand-400 hover:text-brand-300 transition-colors p-1.5 inline-flex"
+                        className="text-brand-600 hover:text-brand-300 transition-colors p-1.5 inline-flex"
                         title="Edit"
                       >
                         <Edit2 className="w-4 h-4" />

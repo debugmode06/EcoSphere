@@ -23,4 +23,4 @@ const categorySchema = new mongoose.Schema({
   },
 }, { timestamps: true });
 
-module.exports = mongoose.models.SocialCategory || mongoose.model('SocialCategory', categorySchema);
+module.exports = mongoose.model('SocialCategory', categorySchema);

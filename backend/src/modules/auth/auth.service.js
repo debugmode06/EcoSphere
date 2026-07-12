@@ -28,8 +28,7 @@ async function register({ name, email, password, role, departmentId }) {
  * Login an employee and return a token and the user document
  */
 async function login({ email, password }) {
-  // Step 1: fetch with passwordHash (select:false field) to verify credentials
-  const employee = await Employee.findOne({ email }).select('+passwordHash');
+  const employee = await Employee.findOne({ email }).select('+passwordHash').populate('department').populate('badges');
   if (!employee) {
     throw new Error('Invalid email or password');
   }
@@ -69,8 +68,16 @@ async function getMe(id) {
     });
 }
 
+/**
+ * Get all employees
+ */
+async function getEmployees() {
+  return Employee.find({}).populate('department').select('-passwordHash');
+}
+
 module.exports = {
   register,
   login,
   getMe,
+  getEmployees,
 };

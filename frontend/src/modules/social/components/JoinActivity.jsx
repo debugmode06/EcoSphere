@@ -23,26 +23,26 @@ export default function JoinActivity({ activity, onJoin, onClose }) {
       <div className="card w-full max-w-md p-6 space-y-4 bg-surface">
         <div className="flex items-start justify-between">
           <div>
-            <h2 className="text-lg font-bold text-slate-100">Join Activity</h2>
-            <p className="text-slate-400 text-sm mt-1">{activity.title}</p>
+            <h2 className="text-lg font-bold text-slate-900">Join Activity</h2>
+            <p className="text-slate-500 text-sm mt-1">{activity.title}</p>
           </div>
-          <button onClick={onClose} className="text-slate-400 hover:text-slate-200 transition-colors ml-4">
+          <button onClick={onClose} className="text-slate-500 hover:text-slate-800 transition-colors ml-4">
             <X className="w-5 h-5" />
           </button>
         </div>
 
-        <div className="bg-slate-800/50 rounded-xl p-4 space-y-2 text-sm">
+        <div className="bg-slate-50 rounded-xl p-4 space-y-2 text-sm">
           <div className="flex justify-between">
-            <span className="text-slate-400">Category</span>
-            <span className="text-slate-200">{activity.categoryId?.name || '—'}</span>
+            <span className="text-slate-500">Category</span>
+            <span className="text-slate-800">{activity.categoryId?.name || '—'}</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-slate-400">Location</span>
-            <span className="text-slate-200">{activity.location}</span>
+            <span className="text-slate-500">Location</span>
+            <span className="text-slate-800">{activity.location}</span>
           </div>
           <div className="flex justify-between">
-            <span className="text-slate-400">Dates</span>
-            <span className="text-slate-200">
+            <span className="text-slate-500">Dates</span>
+            <span className="text-slate-800">
               {new Date(activity.startDate).toLocaleDateString()} — {new Date(activity.endDate).toLocaleDateString()}
             </span>
           </div>

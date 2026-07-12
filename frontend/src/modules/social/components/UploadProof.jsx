@@ -26,15 +26,15 @@ export default function UploadProof({ participation, onUpload, onClose }) {
       <div className="card w-full max-w-md p-6 space-y-4 bg-surface">
         <div className="flex items-start justify-between">
           <div>
-            <h2 className="text-lg font-bold text-slate-100">Upload Proof</h2>
-            <p className="text-slate-400 text-sm mt-1">{participation.csrActivityId?.title || 'Activity'}</p>
+            <h2 className="text-lg font-bold text-slate-900">Upload Proof</h2>
+            <p className="text-slate-500 text-sm mt-1">{participation.csrActivityId?.title || 'Activity'}</p>
           </div>
-          <button onClick={onClose} className="text-slate-400 hover:text-slate-200 transition-colors">
+          <button onClick={onClose} className="text-slate-500 hover:text-slate-800 transition-colors">
             <X className="w-5 h-5" />
           </button>
         </div>
 
-        <p className="text-sm text-slate-400">
+        <p className="text-sm text-slate-500">
           Enter the URL of your proof document (e.g., Google Drive, Dropbox, or cloud storage link).
         </p>
 

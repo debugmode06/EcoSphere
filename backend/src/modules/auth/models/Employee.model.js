@@ -29,6 +29,22 @@ const employeeSchema = new mongoose.Schema(
       ref: 'Department',
       required: true,
     },
+    gender: {
+      type: String,
+      enum: ['Male', 'Female', 'Non-binary', 'Other'],
+      required: false,
+    },
+    age: {
+      type: Number,
+      min: 18,
+      max: 100,
+      required: false,
+    },
+    location: {
+      type: String,
+      trim: true,
+      required: false,
+    },
     xp: {
       type: Number,
       default: 0,

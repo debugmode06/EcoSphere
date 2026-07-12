@@ -25,9 +25,8 @@ const Challenge = require('./src/modules/gamification/models/Challenge.model');
 const ChallengeParticipation = require('./src/modules/gamification/models/ChallengeParticipation.model');
 const Badge = require('./src/modules/gamification/models/Badge.model');
 const Reward = require('./src/modules/gamification/models/Reward.model');
-const SocialCategory = require('./src/modules/social/models/Category');
-const CsrActivity = require('./src/modules/social/models/CSRActivity');
-const Participation = require('./src/modules/social/models/Participation');
+const Training = require('./src/modules/social/models/Training');
+const TrainingCompletion = require('./src/modules/social/models/TrainingCompletion');
 
 const hash = (pw) => bcrypt.hashSync(pw, 10);
 
@@ -51,12 +50,8 @@ async function seed() {
     Badge.deleteMany({}),
     Badge.deleteMany({}),
     Reward.deleteMany({}),
-    CarbonTransaction.deleteMany({}),
-    EmissionFactor.deleteMany({}),
-    EnvironmentalGoal.deleteMany({}),
-    SocialCategory.deleteMany({}),
-    CsrActivity.deleteMany({}),
-    Participation.deleteMany({}),
+    Training.deleteMany({}),
+    TrainingCompletion.deleteMany({}),
   ]);
 
   // ── Departments ──────────────────────────────────────────────────────────
@@ -83,6 +78,9 @@ async function seed() {
       passwordHash: hash('Admin@123'),
       role: 'ADMIN',
       department: engineering._id,
+      gender: 'Female',
+      age: 35,
+      location: 'Chennai',
       xp: 500,
       points: 200,
     },
@@ -92,6 +90,9 @@ async function seed() {
       passwordHash: hash('Manager@123'),
       role: 'MANAGER',
       department: operations._id,
+      gender: 'Male',
+      age: 42,
+      location: 'Mumbai',
       xp: 300,
       points: 120,
     },
@@ -101,6 +102,9 @@ async function seed() {
       passwordHash: hash('Emp@123'),
       role: 'EMPLOYEE',
       department: engineering._id,
+      gender: 'Male',
+      age: 28,
+      location: 'Chennai',
       xp: 100,
       points: 50,
     },
@@ -110,6 +114,9 @@ async function seed() {
       passwordHash: hash('Emp@123'),
       role: 'EMPLOYEE',
       department: operations._id,
+      gender: 'Female',
+      age: 31,
+      location: 'Bangalore',
       xp: 80,
       points: 30,
     },
@@ -119,6 +126,9 @@ async function seed() {
       passwordHash: hash('Emp@123'),
       role: 'EMPLOYEE',
       department: hr._id,
+      gender: 'Non-binary',
+      age: 26,
+      location: 'Mumbai',
       xp: 60,
       points: 20,
     },
@@ -355,74 +365,41 @@ async function seed() {
     { name: 'Lunch Voucher', description: 'Organic farm-to-table lunch voucher', pointsRequired: 200, stock: 3, status: 'Active' }
   ]);
 
-  // ── Environmental ──────────────────────────────────────────────────────────
-  console.log('🌍 Seeding environmental data...');
-  const [efGrid, efFuel] = await EmissionFactor.insertMany([
-    { factor_id: 'EF-001', activity_name: 'Grid Electricity (India)', category: 'Electricity', unit: 'kWh', emission_factor: 0.72, factor_unit: 'kgCO2e/kWh', source: 'EPA', year: 2025, is_active: true },
-    { factor_id: 'EF-002', activity_name: 'Diesel (Stationary)', category: 'Fuel', unit: 'liter', emission_factor: 2.68, factor_unit: 'kgCO2e/liter', source: 'EPA', year: 2025, is_active: true },
-    { factor_id: 'EF-003', activity_name: 'Air Travel (Short Haul)', category: 'Travel', unit: 'km', emission_factor: 0.15, factor_unit: 'kgCO2e/km', source: 'EPA', year: 2025, is_active: true },
-    { factor_id: 'EF-004', activity_name: 'General Waste to Landfill', category: 'Waste', unit: 'kg', emission_factor: 0.45, factor_unit: 'kgCO2e/kg', source: 'EPA', year: 2025, is_active: true }
-  ]);
-
-  const t1 = new Date();
-  t1.setDate(t1.getDate() - 10);
-  const t2 = new Date();
-  t2.setDate(t2.getDate() - 5);
-  const t3 = new Date();
-  t3.setDate(t3.getDate() - 2);
-
-  await CarbonTransaction.insertMany([
-    { transaction_id: 'TXN-001', department_id: engineering._id, emission_factor_id: efGrid._id, quantity: 5000, calculated_emission_kg_co2e: 5000 * 0.72, source_module: 'EXPENSE', activity_name: 'Grid Electricity (India)', category: 'Electricity', unit: 'kWh', transaction_date: t1 },
-    { transaction_id: 'TXN-002', department_id: operations._id, emission_factor_id: efFuel._id, quantity: 1500, calculated_emission_kg_co2e: 1500 * 2.68, source_module: 'MANUFACTURING', activity_name: 'Diesel (Stationary)', category: 'Fuel', unit: 'liter', transaction_date: t2 },
-    { transaction_id: 'TXN-003', department_id: hr._id, emission_factor_id: efGrid._id, quantity: 1200, calculated_emission_kg_co2e: 1200 * 0.72, source_module: 'EXPENSE', activity_name: 'Grid Electricity (India)', category: 'Electricity', unit: 'kWh', transaction_date: t3 },
-    { transaction_id: 'TXN-004', department_id: engineering._id, emission_factor_id: efGrid._id, quantity: 4800, calculated_emission_kg_co2e: 4800 * 0.72, source_module: 'EXPENSE', activity_name: 'Grid Electricity (India)', category: 'Electricity', unit: 'kWh', transaction_date: new Date() },
-  ]);
-
-  await EnvironmentalGoal.insertMany([
-    { goal_id: 'GL-001', goal_name: 'Reduce Q3 Electricity Consumption by 15%', baseline_emission_kg_co2e: 12000, target_emission_kg_co2e: 11000, start_date: new Date(), end_date: new Date('2025-09-30'), department_id: engineering._id, status: 'ACTIVE' },
-    { goal_id: 'GL-002', goal_name: 'Zero Waste to Landfill 2026', baseline_emission_kg_co2e: 1000, target_emission_kg_co2e: 0, start_date: new Date(), end_date: new Date('2026-12-31'), department_id: operations._id, status: 'ACTIVE' },
-  ]);
-
-  // ── Social ─────────────────────────────────────────────────────────────────
-  console.log('🤝 Seeding social data...');
-  const [socCat1, socCat2] = await SocialCategory.insertMany([
-    { name: 'Community Outreach', createdBy: admin._id },
-    { name: 'Environmental Cleanup', createdBy: admin._id }
-  ]);
-
-  const [csr1, csr2] = await CsrActivity.insertMany([
+  // ── Training Programs ──────────────────────────────────────────────────────
+  console.log('📚 Seeding training programs...');
+  const [training1, training2, training3] = await Training.insertMany([
     {
-      title: 'Local Park Cleanup',
-      description: 'Join us in cleaning up the central park this weekend.',
-      categoryId: socCat2._id,
-      departmentId: hr._id,
-      location: 'Central Park',
-      startDate: new Date(),
-      endDate: new Date(Date.now() + 86400000 * 2),
-      maxParticipants: 50,
-      evidenceRequired: true,
-      status: 'active',
-      createdBy: manager1._id
+      title: 'ESG Fundamentals Workshop',
+      description: 'Introduction to Environmental, Social, and Governance principles and reporting standards.',
+      department: engineering._id,
+      startDate: new Date('2025-07-01'),
+      endDate: new Date('2025-08-15'),
     },
     {
-      title: 'Food Bank Volunteering',
-      description: 'Help sort and pack food for the local food bank.',
-      categoryId: socCat1._id,
-      departmentId: operations._id,
-      location: 'Downtown Food Bank',
-      startDate: new Date(),
-      endDate: new Date(Date.now() + 86400000 * 5),
-      maxParticipants: 20,
-      evidenceRequired: false,
-      status: 'active',
-      createdBy: admin._id
-    }
+      title: 'Carbon Footprint Reduction Training',
+      description: 'Hands-on workshop on measuring and reducing corporate carbon footprint.',
+      department: operations._id,
+      startDate: new Date('2025-06-15'),
+      endDate: new Date('2025-07-30'),
+    },
+    {
+      title: 'Diversity & Inclusion Awareness',
+      description: 'Promoting inclusive workplace culture, unconscious bias training, and anti-discrimination protocols.',
+      department: hr._id,
+      startDate: new Date('2025-08-01'),
+      endDate: new Date('2025-09-30'),
+    },
   ]);
 
-  await Participation.insertMany([
-    { employeeId: emp1._id, csrActivityId: csr1._id, status: 'approved', approvedBy: admin._id, approvedDate: new Date() },
-    { employeeId: emp2._id, csrActivityId: csr1._id, status: 'approved', approvedBy: admin._id, approvedDate: new Date() },
-    { employeeId: emp1._id, csrActivityId: csr2._id, status: 'pending' }
+  console.log('🎓 Seeding training completions...');
+  await TrainingCompletion.insertMany([
+    { trainingId: training1._id, employeeId: emp1._id, status: 'completed', completionDate: new Date('2025-07-20') },
+    { trainingId: training1._id, employeeId: admin._id, status: 'assigned' },
+    { trainingId: training2._id, employeeId: emp2._id, status: 'completed', completionDate: new Date('2025-07-10') },
+    { trainingId: training2._id, employeeId: emp1._id, status: 'assigned' },
+    { trainingId: training2._id, employeeId: manager1._id, status: 'assigned' },
+    { trainingId: training3._id, employeeId: emp3._id, status: 'assigned' },
+    { trainingId: training3._id, employeeId: emp1._id, status: 'completed', completionDate: new Date('2025-08-25') },
   ]);
 
   console.log('\n✅ Seeding complete!');

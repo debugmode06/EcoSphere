@@ -92,3 +92,45 @@ export const getActivityParticipants = async (activityId) => {
   const res = await axiosClient.get(`/social/participations/activity/${activityId}`);
   return res.data.participations;
 };
+
+// Training APIs
+export const getTrainings = async (params) => {
+  const res = await axiosClient.get('/social/training', { params });
+  return res.data.trainings;
+};
+
+export const createTraining = async (data) => {
+  const res = await axiosClient.post('/social/training', data);
+  return res.data.training;
+};
+
+export const updateTraining = async (id, data) => {
+  const res = await axiosClient.put(`/social/training/${id}`, data);
+  return res.data.training;
+};
+
+export const deleteTraining = async (id) => {
+  const res = await axiosClient.delete(`/social/training/${id}`);
+  return res.data;
+};
+
+export const assignTraining = async (id, data) => {
+  const res = await axiosClient.post(`/social/training/${id}/assign`, data);
+  return res.data;
+};
+
+export const markComplete = async (id) => {
+  const res = await axiosClient.patch(`/social/training/${id}/complete`);
+  return res.data.completion;
+};
+
+export const getEmployeeTrainingHistory = async () => {
+  const res = await axiosClient.get('/social/training/my-history');
+  return res.data.history;
+};
+
+// Diversity Metrics
+export const getDiversity = async () => {
+  const res = await axiosClient.get('/social/reports/diversity');
+  return res.data;
+};

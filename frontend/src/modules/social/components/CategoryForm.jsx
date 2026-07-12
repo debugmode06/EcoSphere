@@ -34,7 +34,7 @@ export default function CategoryForm({ category, onSubmit, onClose }) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 glass-overlay">
       <div className="card w-full max-w-md bg-surface p-6 relative flex flex-col gap-4">
-        <h2 className="text-xl font-bold text-slate-100">
+        <h2 className="text-xl font-bold text-slate-900">
           {category ? 'Edit Category' : 'Create Category'}
         </h2>
         

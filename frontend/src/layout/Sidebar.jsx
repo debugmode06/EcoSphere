@@ -2,7 +2,7 @@ import { NavLink } from 'react-router-dom';
 import {
   LayoutDashboard, Leaf, Users, ShieldCheck, Trophy,
   BarChart2, Settings, ChevronDown, Globe, ClipboardList,
-  Tag, Activity, ClipboardCheck
+  Tag, Activity, ClipboardCheck, GraduationCap
 } from 'lucide-react';
 import { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
@@ -33,6 +33,9 @@ function buildNavGroups(role) {
         { to: '/social/activities', icon: Activity, label: 'CSR Activities' },
         { to: '/social/participations', icon: ClipboardList, label: 'My Participations' },
         ...(isAdminOrManager ? [{ to: '/social/approvals', icon: ClipboardCheck, label: 'Approvals' }] : []),
+        { to: '/social/training', icon: GraduationCap, label: 'Trainings' },
+        { to: '/social/diversity', icon: Users, label: 'Diversity' },
+        ...(isAdminOrManager ? [{ to: '/social/reports', icon: BarChart2, label: 'Social Reports' }] : []),
       ],
     },
     {
